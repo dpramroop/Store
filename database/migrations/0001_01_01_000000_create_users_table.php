@@ -35,6 +35,72 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+
+            Schema::create('customer', function (Blueprint $table) {
+            $table->id();
+            $table->string('fname');
+            $table->string('lname');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('contact_no')->unique();
+            $table->string('password');
+            $table->rememberToken();
+            $table->timestamps();
+        });
+
+                Schema::create('item', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('description');
+            $table->string('category');
+            $table->string('brand');
+            $table->json('attributes');
+            $table->integer('stock_quantity');
+            $table->rememberToken();
+            $table->timestamps();
+        });
+
+            Schema::create('sale_item', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('description');
+            $table->string('category');
+            $table->decimal('price', 8, 2);
+            $table->json('item_list');
+            $table->rememberToken();
+            $table->timestamps();
+        });
+
+            Schema::create('Order', function (Blueprint $table) {
+            $table->id();
+            $table->integer('customer_id');
+            $table->decimal('totalprice', 8, 2);
+            $table->string('status');
+            $table->rememberToken();
+            $table->timestamps();
+        });
+
+            Schema::create('Order_Sales_item', function (Blueprint $table) {
+            $table->id();
+            $table->integer('sales_item_id');
+            $table->string('quantity');
+            $table->decimal('cost', 8, 2);
+            $table->rememberToken();
+            $table->timestamps();
+        });
+
+              Schema::create('courier', function (Blueprint $table) {
+            $table->id();
+            $table->string('fname');
+            $table->string('lname');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('contact_no')->unique();
+            $table->decimal('cost', 8, 2);
+            $table->rememberToken();
+            $table->timestamps();
+        });
+
     }
 
     /**
@@ -45,5 +111,11 @@ return new class extends Migration
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('customer');
+        Schema::dropIfExists('item');
+        Schema::dropIfExists('sale_item');
+        Schema::dropIfExists('Order');
+        Schema::dropIfExists('Order_Sales_item');
+        Schema::dropIfExists('courier');
     }
 };
