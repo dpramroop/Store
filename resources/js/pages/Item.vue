@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 // Your imports go here
 
@@ -24,7 +23,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 </script>
 <template>
-     <Head title="Item" />
+     <Head title="Item"/>
 
 <app-layout :breadcrumbs="breadcrumbs">
            <AddPage/>
