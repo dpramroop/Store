@@ -1,22 +1,34 @@
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
-
+import { useForm } from '@inertiajs/vue3'
+import { ref, reactive, computed,defineEmits,defineProps } from 'vue';
+import {store} from '@/actions/App/Http/Controllers/ItemController';
 // Dialog visibility
 const showDialog = ref(false)
-
+const usedForm = useForm;
 // Form state
 interface Attribute {
   name: string
   value: string
 }
-
-const form = reactive({
+const props = defineProps<{ items: Array<any> }>()
+const emit = defineEmits<{ (e: 'item-added', item: any): void }>()
+const form = usedForm({
   name: '',
   description: '',
   brand: '',
   category: '',
-  attributes: [] as Attribute[]
+  stock_quantity: '',
+  attributes: [] as Attribute[],
 })
+
+// const form = reactive({
+//   name: '',
+//   description: '',
+//   brand: '',
+//   category: '',
+//   stockquantity: '',
+//   attributes: [] as Attribute[]
+// })
 
 const attr = reactive<Attribute>({
   name: '',
@@ -46,6 +58,15 @@ function submitForm() {
     alert('Item name is required.')
     return
   }
+   form.post(store().url, {
+    onSuccess: (response) => {
+      form.reset()
+      emit('item-added', response) // notify parent
+    },
+    onError: (errors) => {
+      console.error('Validation errors:', errors)
+    }
+  })
 
   console.log('Submitting item:', { ...form })
 
@@ -55,6 +76,7 @@ function submitForm() {
     description: '',
     brand: '',
     category: '',
+    stockquantity: '',
     attributes: []
   })
 
@@ -72,7 +94,7 @@ function submitForm() {
       <div class="modal-content">
         <h1>Add Item</h1>
 
-        <form @submit.prevent="submitForm" class="form">
+        <Form @submit.prevent="submitForm"  class="form">
           <div class="field">
             <label for="name">Name</label>
             <input id="name" v-model="form.name" type="text" required />
@@ -91,6 +113,11 @@ function submitForm() {
           <div class="field">
             <label for="category">Category</label>
             <input id="category" v-model="form.category" type="text" />
+          </div>
+
+           <div class="field">
+            <label for="stockquantity">Stock Quantity</label>
+            <input id="stockquantity" v-model="form.stock_quantity" type="text" />
           </div>
 
           <section class="attributes">
@@ -136,7 +163,7 @@ function submitForm() {
             <button type="submit">Save Item</button>
             <button type="button" @click="showDialog = false">Cancel</button>
           </div>
-        </form>
+        </Form>
       </div>
     </Dialog>
   </div>
