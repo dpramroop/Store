@@ -40,7 +40,7 @@ class ItemController extends Controller
         ]);
 
         // Return JSON response for Inertia
-        return response()->json($item, 201);
+        return  redirect()->route('item')->with('success', 'Item added!');;
     }
 
     public function update(Request $request, Item $item)

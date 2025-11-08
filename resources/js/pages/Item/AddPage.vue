@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3'
-import { ref, reactive, computed,defineEmits,defineProps } from 'vue';
+import { ref, reactive, computed,defineEmits } from 'vue';
 import {store} from '@/actions/App/Http/Controllers/ItemController';
 // Dialog visibility
 const showDialog = ref(false)
-const usedForm = useForm;
+
 // Form state
 interface Attribute {
   name: string
   value: string
 }
-const props = defineProps<{ items: Array<any> }>()
+
 const emit = defineEmits<{ (e: 'item-added', item: any): void }>()
-const form = usedForm({
+const form = useForm({
   name: '',
   description: '',
   brand: '',
@@ -58,11 +58,15 @@ function submitForm() {
     alert('Item name is required.')
     return
   }
+
    form.post(store().url, {
-    onSuccess: (response) => {
-      form.reset()
-      emit('item-added', response) // notify parent
-    },
+   onSuccess: ({ }) => {
+    console.log('Item successfully submitted:', { ...form })
+  emit('item-added', form.data())
+    form.reset() // ✅ reset only after success
+      showDialog.value = false
+
+},
     onError: (errors) => {
       console.error('Validation errors:', errors)
     }
@@ -71,14 +75,14 @@ function submitForm() {
   console.log('Submitting item:', { ...form })
 
   // Reset form
-  Object.assign(form, {
-    name: '',
-    description: '',
-    brand: '',
-    category: '',
-    stockquantity: '',
-    attributes: []
-  })
+//   Object.assign(form, {
+//     name: '',
+//     description: '',
+//     brand: '',
+//     category: '',
+//     stock_quantity: '',
+//     attributes: []
+//   })
 
   showDialog.value = false // Close modal after submit
 }
