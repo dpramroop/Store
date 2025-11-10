@@ -191,7 +191,7 @@ function submitForm() {
   background: white;
   padding: 20px;
   border-radius: 8px;
-  width: 500px;
+  width: 650px;
   max-height: 80vh;
   overflow-y: auto;
 }
