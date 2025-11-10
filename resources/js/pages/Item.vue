@@ -8,6 +8,7 @@ import { item } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head,router } from '@inertiajs/vue3';
 import AddPage from './Item/AddPage.vue';
+import ListItem from './Item/ListItem.vue';
 const props = defineProps<{
   message?: string
   items: Array<any>
@@ -38,12 +39,10 @@ function addItem(item: any) {
     <div>
         <!-- Your template content goes here -->
         <p>{{ props.message }}</p>
-        <ul>
-          <li v-for="item in itemList" :key="item.id">
-            {{ item.name }} - {{ item.stock_quantity }} - {{ item.attributes[0].name }} {{ item.attributes[0].value }}
+       <div v-for="item in itemList" :key="item.id" class="mb-4">
+        <ListItem :item="item"/>
 
-          </li>
-        </ul>
+       </div>
     </div>
 </app-layout>
 </template>
