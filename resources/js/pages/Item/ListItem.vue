@@ -9,6 +9,7 @@
                     <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
             </button>
+            <UpdateItem :item_given="item"/>
         </header>
                <div class="details">
                 <p class="field"><strong>Description:</strong> <span>{{ item.description || '—' }}</span></p>
@@ -39,6 +40,7 @@
 
 <script setup lang="ts">
 import { ref,defineProps } from 'vue'
+import UpdateItem from './UpdateItem.vue'
 
 const props = defineProps({
     item: {

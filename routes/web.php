@@ -17,5 +17,5 @@ Route::get('dashboard', function () {
 
 Route::get('/Item', [ItemController::class, 'show'])->middleware(['auth', 'verified'])->name('item');
 Route::post('/additem', [ItemController::class, 'store'])->middleware(['auth', 'verified'])->name('items.store');
-
+Route::post('/updateitem/{id}', [ItemController::class, 'update'])->middleware(['auth', 'verified'])->name('items.update');
 require __DIR__.'/settings.php';

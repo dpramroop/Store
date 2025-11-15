@@ -43,23 +43,20 @@ class ItemController extends Controller
         return  redirect()->route('item')->with('success', 'Item added!');;
     }
 
-    public function update(Request $request, Item $item)
+    public function update(Request $request)
     {
-        $validated = $request->validate([
+         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'brand' => 'nullable|string',
             'category' => 'nullable|string',
-            'stock_quantity' => 'required|numeric|min:0',
+            'stock_quantity' => 'nullable|integer',
+            'attributes' => 'nullable|array',
         ]);
-
+        $item = Item::findOrFail($request->route('id'));
         $item->update($validated);
         return response()->json($item);
     }
 
-    public function destroy(Item $item)
-    {
-        $item->delete();
-        return response()->json(null, 204);
-    }
+
 }
