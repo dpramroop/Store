@@ -15,8 +15,9 @@ interface Attribute {
 const props=defineProps<{
   item_given: any
 }>()
-const emit = defineEmits<{ (e: 'item-added', item: any): void }>()
+const emit = defineEmits<{ (e: 'item-updated', item: any): void }>()
 const form = useForm({
+    id: props.item_given.id,
   name: props.item_given.name || '',
   description: props.item_given.description || '',
   brand: props.item_given.brand || '',
@@ -66,7 +67,7 @@ function submitForm() {
    form.post(update(props.item_given.id).url, {
    onSuccess: ({ }) => {
     console.log('Item successfully submitted:', { ...form })
-  emit('item-added', form.data())
+  emit('item-updated', form.data())
     form.reset() // ✅ reset only after success
       showDialog.value = false
 
@@ -100,7 +101,7 @@ function submitForm() {
     <!-- Modal -->
     <Dialog v-if="showDialog" @close="showDialog = false" class="modal-overlay">
       <div class="modal-content">
-        <h1>Add Item</h1>
+        <h1>Updated Item</h1>
 
         <Form @submit.prevent="submitForm"  class="form">
           <div class="field">

@@ -27,7 +27,17 @@ function addItem(item: any) {
 
       itemList.value.push(item)
   router.reload({ only: ['items'] })
-      alert(JSON.stringify(item));
+    //   alert(JSON.stringify(item));
+}
+function updateItem(item: any) {
+
+  itemList.value = itemList.value.map((it) =>
+    it.id === item.id ? { ...item } : it
+  )
+
+  // Force Vue to see the change
+  itemList.value = [...itemList.value]
+    
 }
 
 </script>
@@ -40,7 +50,7 @@ function addItem(item: any) {
         <!-- Your template content goes here -->
         <p>{{ props.message }}</p>
        <div v-for="item in itemList" :key="item.id" class="mb-4">
-        <ListItem :item="item"/>
+        <ListItem :item="item" v-on:item-updated="updateItem"/>
 
        </div>
     </div>

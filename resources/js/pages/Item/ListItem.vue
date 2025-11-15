@@ -9,7 +9,7 @@
                     <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
             </button>
-            <UpdateItem :item_given="item"/>
+            <UpdateItem :item_given="item" v-on:item-updated="notifyUpdate"/>
         </header>
                <div class="details">
                 <p class="field"><strong>Description:</strong> <span>{{ item.description || '—' }}</span></p>
@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref,defineProps } from 'vue'
+import { ref,defineProps,defineEmits } from 'vue'
 import UpdateItem from './UpdateItem.vue'
 
 const props = defineProps({
@@ -53,10 +53,16 @@ const props = defineProps({
         })
     }
 })
+const emits = defineEmits<{
+    (e: 'item-updated', item: any): void
+}>()
 
 const open = ref(false)
 function toggle() {
     open.value = !open.value
+}
+function notifyUpdate(updatedItem: any) {
+    emits('item-updated', updatedItem)
 }
 </script>
 
