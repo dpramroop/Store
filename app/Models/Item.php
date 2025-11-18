@@ -21,4 +21,9 @@ class Item extends Model
         protected $casts = [
         'attributes' => 'array',
     ];
+
+    public function orderSalesItems()
+    {
+        return $this->hasMany(OrderSalesItem::class, 'sales_item_id');
+    }
 }

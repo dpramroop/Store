@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\Item;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-class ItemController extends Controller
+
+class CustomerController extends Controller
 {
+    //
        public function show()
     {
-        return Inertia::render('Item', [
-            'message' => 'This is a message from Laravel!','items' => Item::all(),
+        return Inertia::render('Customer', [
+            'message' => 'This is a message from Laravel!','items' => Customer::all(),
         ]);
     }
 
@@ -60,6 +63,4 @@ class ItemController extends Controller
         $item->update($validated);
         return redirect()->route('item')->with('success', 'Item updated!');
     }
-
-
 }

@@ -43,7 +43,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('contact_no')->unique();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
@@ -56,6 +56,7 @@ return new class extends Migration
             $table->string('brand');
             $table->json('attributes');
             $table->integer('stock_quantity');
+            $table->decimal('price', 8, 2);
             $table->rememberToken();
             $table->timestamps();
         });
@@ -82,6 +83,7 @@ return new class extends Migration
 
             Schema::create('Order_Sales_item', function (Blueprint $table) {
             $table->id();
+            $table->integer('order_id');
             $table->integer('sales_item_id');
             $table->string('quantity');
             $table->decimal('cost', 8, 2);

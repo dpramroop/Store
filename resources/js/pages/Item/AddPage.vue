@@ -18,6 +18,7 @@ const form = useForm({
   brand: '',
   category: '',
   stock_quantity: '',
+  price: '',
   attributes: [] as Attribute[],
 })
 
@@ -122,6 +123,11 @@ function submitForm() {
            <div class="field">
             <label for="stockquantity">Stock Quantity</label>
             <input id="stockquantity" v-model="form.stock_quantity" type="text" />
+          </div>
+
+            <div class="field">
+            <label for="stockquantity">Price</label>
+            <input id="stockquantity" v-model="form.price" type="text" />
           </div>
 
           <section class="attributes">

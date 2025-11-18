@@ -1,23 +1,25 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Item;
+use App\Models\Order;
+use App\Models\OrderSalesItem;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-class ItemController extends Controller
+class OrderController extends Controller
 {
-       public function show()
+    //
+     public function show()
     {
-        return Inertia::render('Item', [
-            'message' => 'This is a message from Laravel!','items' => Item::all(),
+        return Inertia::render('Order', [
+            'message' => 'This is a message from Laravel!','orders' => Order::all(),
         ]);
     }
 
     public function store(Request $request)
     {
- Log::info('Item created:', $request->all());
+ Log::info('Order created:', $request->all());
 
         // Validate your data
         $validated = $request->validate([
@@ -60,6 +62,5 @@ class ItemController extends Controller
         $item->update($validated);
         return redirect()->route('item')->with('success', 'Item updated!');
     }
-
 
 }
