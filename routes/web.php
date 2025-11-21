@@ -22,4 +22,6 @@ Route::post('/updateitem/{id}', [ItemController::class, 'update'])->middleware([
 
 Route::get('/Order', [OrderController::class, 'show'])->middleware(['auth', 'verified'])->name('order');
 Route::get('/Customer', [CustomerController::class, 'show'])->middleware(['auth', 'verified'])->name('customer');
+Route::post('/addCustomer', [CustomerController::class, 'store'])->middleware(['auth', 'verified'])->name('customer.store');
+Route::post('/updatecustomer/{id}', [CustomerController::class, 'update'])->middleware(['auth', 'verified'])->name('customer.update');
 require __DIR__.'/settings.php';

@@ -20,47 +20,38 @@ class CustomerController extends Controller
 
     public function store(Request $request)
     {
- Log::info('Item created:', $request->all());
+ Log::info('Customer created:', $request->all());
 
         // Validate your data
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'brand' => 'nullable|string',
-            'category' => 'nullable|string',
-            'stock_quantity' => 'nullable|integer',
-            'attributes' => 'nullable|array',
-            'price' => 'nullable|numeric',
+            'fname' => 'required|string|max:255',
+            'lname' => 'required|string|max:255',
+           'email' => 'required|string|max:255',
+        'contact_no' => 'required|string|max:20',
         ]);
 
         // Create the new item
-        $item = Item::create([
-            'name' => $validated['name'],
-            'description' => $validated['description'] ?? null,
-            'brand' => $validated['brand'] ?? null,
-            'category' => $validated['category'] ?? null,
-            'stock_quantity' => $validated['stock_quantity'] ?? 0,
-            'attributes' => $request->input('attributes', []),
-            'price' => $validated['price'] ?? 0,
+        $customer = Customer::create([
+            'fname' => $validated['fname'],
+            'lname' => $validated['lname'],
+            'email' => $validated['email'],
+            'phone' => $validated['contact_no'],
         ]);
 
         // Return JSON response for Inertia
-        return  redirect()->route('item')->with('success', 'Item added!');
+        return  redirect()->route('customer')->with('success', 'Customer added!');
     }
 
     public function update(Request $request)
     {
-         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'brand' => 'nullable|string',
-            'category' => 'nullable|string',
-            'stock_quantity' => 'nullable|integer',
-            'attributes' => 'nullable|array',
-            'price' => 'nullable|numeric',
+     $validated = $request->validate([
+            'fname' => 'required|string|max:255',
+            'lname' => 'required|string|max:255',
+           'email' => 'required|string|max:255',
+        'contact_no' => 'required|string|max:20',
         ]);
-        $item = Item::findOrFail($request->route('id'));
-        $item->update($validated);
-        return redirect()->route('item')->with('success', 'Item updated!');
+        $customer = Customer::findOrFail($request->route('id'));
+        $customer->update($validated);
+        return redirect()->route('customer')->with('success', 'Customer updated!');
     }
 }

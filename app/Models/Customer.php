@@ -14,7 +14,7 @@ use HasFactory;
         'lname',
         'email',
         'phone',
-        'contact_no'
+        
 
     ];
 }
