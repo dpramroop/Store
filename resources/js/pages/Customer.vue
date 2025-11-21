@@ -6,14 +6,15 @@ import { defineProps,ref } from 'vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { order } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
-import { Head,router } from '@inertiajs/vue3';
+import { Head} from '@inertiajs/vue3';
+import AddCustomer from './Customer/AddCustomer.vue';
 
 const props = defineProps<{
   message?: string
   customers: Array<any>
 }>()
 
-const orderList = ref([...props.customers ?? []])
+const customerList = ref([...props.customers ?? []])
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -22,7 +23,12 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
+function addCustomer(customer: any) {
 
+      customerList.value.push(customer)
+
+    //   alert(JSON.stringify(item));
+}
 
 </script>
 <template>
@@ -30,7 +36,15 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 <app-layout :breadcrumbs="breadcrumbs">
 <h1>Hello Customer</h1>
+<AddCustomer v-on:customer-added="addCustomer"/>
+<div>
+    <!-- Your template content goes here -->
 
+   <div v-for="customer in customerList" :key="customer.id" class="mb-4">
+    <p>{{ customer.fname }} {{ customer.lname }} - {{ customer.email }} - {{ customer.contact_no }}</p>
+
+   </div>
+</div>
 
 </app-layout>
 </template>

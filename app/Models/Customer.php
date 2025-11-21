@@ -13,8 +13,8 @@ use HasFactory;
         'fname',
         'lname',
         'email',
-        'phone',
-        
+        'contact_no',
+
 
     ];
 }

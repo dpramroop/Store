@@ -1,25 +1,20 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3'
-import { ref, reactive, computed,defineEmits } from 'vue';
+import { ref, defineEmits } from 'vue';
 import {store} from '@/actions/App/Http/Controllers/CustomerController';
 // Dialog visibility
 const showDialog = ref(false)
 
 // Form state
-interface Attribute {
-  name: string
-  value: string
-}
 
-const emit = defineEmits<{ (e: 'item-added', item: any): void }>()
+
+const emit = defineEmits<{ (e: 'customer-added', item: any): void }>()
 const form = useForm({
-  name: '',
-  description: '',
-  brand: '',
-  category: '',
-  stock_quantity: '',
-  price: '',
-  attributes: [] as Attribute[],
+  fname: '',
+  lname: '',
+  email: '',
+  contact_no: '',
+
 })
 
 // const form = reactive({
@@ -31,31 +26,16 @@ const form = useForm({
 //   attributes: [] as Attribute[]
 // })
 
-const attr = reactive<Attribute>({
-  name: '',
-  value: ''
-})
 
-const canAdd = computed(() => attr.name.trim() !== '' && attr.value.trim() !== '')
+
+
 
 // Add attribute
-function addAttribute() {
-  const name = attr.name.trim()
-  const value = attr.value.trim()
-  if (!name) return
-  form.attributes.push({ name, value })
-  attr.name = ''
-  attr.value = ''
-}
 
-// Remove attribute
-function removeAttribute(index: number) {
-  form.attributes.splice(index, 1)
-}
 
 // Submit form
 function submitForm() {
-  if (!form.name.trim()) {
+  if (!form.fname.trim()) {
     alert('Item name is required.')
     return
   }
@@ -63,7 +43,7 @@ function submitForm() {
    form.post(store().url, {
    onSuccess: ({ }) => {
     console.log('Item successfully submitted:', { ...form })
-  emit('item-added', form.data())
+  emit('customer-added', form.data())
     form.reset() // ✅ reset only after success
       showDialog.value = false
 
@@ -101,76 +81,27 @@ function submitForm() {
 
         <Form @submit.prevent="submitForm"  class="form">
           <div class="field">
-            <label for="name">Name</label>
-            <input id="name" v-model="form.name" type="text" required />
+            <label for="name">First Name</label>
+            <input id="name" v-model="form.fname" type="text" required />
           </div>
 
           <div class="field">
-            <label for="description">Description</label>
-            <textarea id="description" v-model="form.description" rows="4"></textarea>
+            <label for="lname">Last Name</label>
+            <input id="lname" v-model="form.lname" rows="4" required/>
           </div>
 
           <div class="field">
-            <label for="brand">Brand</label>
-            <input id="brand" v-model="form.brand" type="text" />
+            <label for="email">Email</label>
+            <input id="email" v-model="form.email" type="email" />
           </div>
 
           <div class="field">
-            <label for="category">Category</label>
-            <input id="category" v-model="form.category" type="text" />
+            <label for="contact_no">Contact Number</label>
+            <input id="contact_no" v-model="form.contact_no" type="text" />
           </div>
-
-           <div class="field">
-            <label for="stockquantity">Stock Quantity</label>
-            <input id="stockquantity" v-model="form.stock_quantity" type="text" />
-          </div>
-
-            <div class="field">
-            <label for="stockquantity">Price</label>
-            <input id="stockquantity" v-model="form.price" type="text" />
-          </div>
-
-          <section class="attributes">
-            <h2>Attributes</h2>
-
-            <div class="add-attribute">
-              <input
-                placeholder="Attribute name"
-                v-model="attr.name"
-                @keyup.enter="addAttribute"
-                type="text"
-              />
-              <input
-                placeholder="Attribute value"
-                v-model="attr.value"
-                @keyup.enter="addAttribute"
-                type="text"
-              />
-              <button type="button" @click="addAttribute" :disabled="!canAdd">
-                Add Attribute
-              </button>
-            </div>
-
-            <ul class="attribute-list">
-              <li
-                v-for="(a, i) in form.attributes"
-                :key="i"
-                class="attribute-item"
-              >
-                <span class="attr-label">{{ a.name }}:</span>
-                <span class="attr-value">{{ a.value }}</span>
-                <button type="button" class="remove" @click="removeAttribute(i)">
-                  Remove
-                </button>
-              </li>
-              <li v-if="form.attributes.length === 0" class="empty">
-                No attributes added
-              </li>
-            </ul>
-          </section>
 
           <div class="actions">
-            <button type="submit">Save Item</button>
+            <button type="submit">Save Customer</button>
             <button type="button" @click="showDialog = false">Cancel</button>
           </div>
         </Form>
