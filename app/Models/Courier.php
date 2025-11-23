@@ -15,7 +15,8 @@ class Courier extends Model
         'email',
         'contact_no',
         'cost'
-
-
-    ];
+];
+protected $casts = [
+    'cost' => 'decimal:2',
+];
 }

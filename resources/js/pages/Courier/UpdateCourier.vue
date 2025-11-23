@@ -1,20 +1,25 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3'
-import { ref, defineEmits } from 'vue';
-import {store} from '@/actions/App/Http/Controllers/CustomerController';
+import { ref,defineEmits,defineProps } from 'vue';
+import {update} from '@/actions/App/Http/Controllers/CourierController';
+// import { item } from '@/routes';
 // Dialog visibility
 const showDialog = ref(false)
 
 // Form state
 
 
-const emit = defineEmits<{ (e: 'customer-added', item: any): void }>()
+const props=defineProps<{
+  courier_given: any
+}>()
+const emit = defineEmits<{ (e: 'courier-updated', courier: any): void }>()
 const form = useForm({
-  fname: '',
-  lname: '',
-  email: '',
-  contact_no: '',
-
+    id: props.courier_given.id,
+  fname: props.courier_given.fname || '',
+  lname: props.courier_given.lname|| '',
+  email: props.courier_given.email || '',
+  contact_no: props.courier_given.contact_no || '',
+  cost: props.courier_given.cost || '',
 })
 
 // const form = reactive({
@@ -29,21 +34,17 @@ const form = useForm({
 
 
 
-
-// Add attribute
-
-
 // Submit form
 function submitForm() {
   if (!form.fname.trim()) {
-    alert('Name is required.')
+    alert('Courier name is required.')
     return
   }
 
-   form.post(store().url, {
+   form.post(update(props.courier_given.id).url, {
    onSuccess: ({ }) => {
-    console.log('Customer successfully submitted:', { ...form })
-  emit('customer-added', form.data())
+    console.log('Courier successfully submitted:', { ...form })
+  emit('courier-updated', form.data())
     form.reset() // ✅ reset only after success
       showDialog.value = false
 
@@ -72,27 +73,27 @@ function submitForm() {
 <template>
   <div>
     <!-- Button to open modal -->
-    <button @click="showDialog = true">Add Customer</button>
+    <button @click="showDialog = true" class="border border-gray-700 text-amber-800">Update Item</button>
 
     <!-- Modal -->
     <Dialog v-if="showDialog" @close="showDialog = false" class="modal-overlay">
       <div class="modal-content">
-        <h1>Add Customer</h1>
+        <h1>Updated Item</h1>
 
         <Form @submit.prevent="submitForm"  class="form">
           <div class="field">
-            <label for="name">First Name</label>
-            <input id="name" v-model="form.fname" type="text" required />
+            <label for="fname">First Name</label>
+            <input id="fname" v-model="form.fname" type="text" required />
           </div>
 
           <div class="field">
             <label for="lname">Last Name</label>
-            <input id="lname" v-model="form.lname" rows="4" required/>
+            <input id="lname" v-model="form.lname" type="text" required />
           </div>
 
           <div class="field">
             <label for="email">Email</label>
-            <input id="email" v-model="form.email" type="email" />
+            <input id="email" v-model="form.email" type="text" />
           </div>
 
           <div class="field">
@@ -100,8 +101,13 @@ function submitForm() {
             <input id="contact_no" v-model="form.contact_no" type="text" />
           </div>
 
+            <div class="field">
+            <label for="cost">Cost</label>
+            <input id="cost" v-model="form.cost" type="text" />
+          </div>
+
           <div class="actions">
-            <button type="submit">Save Customer</button>
+            <button type="submit">Save Courier</button>
             <button type="button" @click="showDialog = false">Cancel</button>
           </div>
         </Form>

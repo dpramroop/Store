@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3'
 import { ref, defineEmits } from 'vue';
-import {store} from '@/actions/App/Http/Controllers/CustomerController';
+import {store} from '@/actions/App/Http/Controllers/CourierController';
 // Dialog visibility
 const showDialog = ref(false)
 
 // Form state
 
 
-const emit = defineEmits<{ (e: 'customer-added', item: any): void }>()
+const emit = defineEmits<{ (e: 'courier-added', courier: any): void }>()
 const form = useForm({
   fname: '',
   lname: '',
   email: '',
   contact_no: '',
-
+  cost: '',
 })
 
 // const form = reactive({
@@ -42,8 +42,8 @@ function submitForm() {
 
    form.post(store().url, {
    onSuccess: ({ }) => {
-    console.log('Customer successfully submitted:', { ...form })
-  emit('customer-added', form.data())
+    console.log('Courier successfully submitted:', { ...form })
+  emit('courier-added', form.data())
     form.reset() // ✅ reset only after success
       showDialog.value = false
 
@@ -72,12 +72,12 @@ function submitForm() {
 <template>
   <div>
     <!-- Button to open modal -->
-    <button @click="showDialog = true">Add Customer</button>
+    <button @click="showDialog = true">Add Courier</button>
 
     <!-- Modal -->
     <Dialog v-if="showDialog" @close="showDialog = false" class="modal-overlay">
       <div class="modal-content">
-        <h1>Add Customer</h1>
+        <h1>Add Courier</h1>
 
         <Form @submit.prevent="submitForm"  class="form">
           <div class="field">
@@ -100,8 +100,13 @@ function submitForm() {
             <input id="contact_no" v-model="form.contact_no" type="text" />
           </div>
 
+            <div class="field">
+            <label for="cost">Price</label>
+            <input id="cost" v-model="form.cost" type="text" />
+          </div>
+
           <div class="actions">
-            <button type="submit">Save Customer</button>
+            <button type="submit">Save Courier</button>
             <button type="button" @click="showDialog = false">Cancel</button>
           </div>
         </Form>

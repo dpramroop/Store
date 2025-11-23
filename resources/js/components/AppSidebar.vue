@@ -15,6 +15,7 @@ import { dashboard } from '@/routes';
 import { item } from '@/routes';
 import { order } from '@/routes';
 import { customer } from '@/routes';
+import { courier } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import { BookOpen, Folder, LayoutGrid, NotebookPen } from 'lucide-vue-next';
@@ -39,6 +40,11 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Customers',
         href: customer(),
+        icon: NotebookPen,
+    },
+     {
+        title: 'Couriers',
+        href: courier(),
         icon: NotebookPen,
     },
 ];

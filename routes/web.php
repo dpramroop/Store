@@ -6,6 +6,7 @@ use Laravel\Fortify\Features;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\CourierController;
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canRegister' => Features::enabled(Features::registration()),
@@ -21,7 +22,13 @@ Route::post('/additem', [ItemController::class, 'store'])->middleware(['auth', '
 Route::post('/updateitem/{id}', [ItemController::class, 'update'])->middleware(['auth', 'verified'])->name('items.update');
 
 Route::get('/Order', [OrderController::class, 'show'])->middleware(['auth', 'verified'])->name('order');
+
+
 Route::get('/Customer', [CustomerController::class, 'show'])->middleware(['auth', 'verified'])->name('customer');
 Route::post('/addCustomer', [CustomerController::class, 'store'])->middleware(['auth', 'verified'])->name('customer.store');
 Route::post('/updatecustomer/{id}', [CustomerController::class, 'update'])->middleware(['auth', 'verified'])->name('customer.update');
+
+Route::get('/Courier', [CourierController::class, 'show'])->middleware(['auth', 'verified'])->name('courier');
+Route::post('/addCourier', [CourierController::class, 'store'])->middleware(['auth', 'verified'])->name('courier.store');
+Route::post('/updatecourier/{id}', [CourierController::class, 'update'])->middleware(['auth', 'verified'])->name('courier.update');
 require __DIR__.'/settings.php';

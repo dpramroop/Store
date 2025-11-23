@@ -73,12 +73,12 @@ function submitForm() {
 <template>
   <div>
     <!-- Button to open modal -->
-    <button @click="showDialog = true" class="border border-gray-700 text-amber-800">Update Item</button>
+    <button @click="showDialog = true" class="border border-gray-700 text-amber-800">Update Customer</button>
 
     <!-- Modal -->
     <Dialog v-if="showDialog" @close="showDialog = false" class="modal-overlay">
       <div class="modal-content">
-        <h1>Updated Item</h1>
+        <h1>Updated Customer</h1>
 
         <Form @submit.prevent="submitForm"  class="form">
           <div class="field">
