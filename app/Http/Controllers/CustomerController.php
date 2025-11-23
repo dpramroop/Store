@@ -11,10 +11,11 @@ use Inertia\Inertia;
 class CustomerController extends Controller
 {
     //
-       public function show()
+       public function show(Request $request)
     {
+
         return Inertia::render('Customer', [
-            'message' => 'This is a message from Laravel!','customers' => Customer::all(),
+            'message' => 'This is a message from Laravel!','customers' => Customer::all()
         ]);
     }
 

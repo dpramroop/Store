@@ -8,12 +8,14 @@ import { order } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head} from '@inertiajs/vue3';
 import AddCustomer from './Customer/AddCustomer.vue';
+import ListCustomer from './Customer/ListCustomer.vue';
 
 const props = defineProps<{
   message?: string
   customers: Array<any>
 }>()
 
+const search=ref('')
 const customerList = ref([...props.customers ?? []])
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -30,6 +32,29 @@ function addCustomer(customer: any) {
     //   alert(JSON.stringify(item));
 }
 
+function updateCustomer(item: any) {
+
+  customerList.value = customerList.value.map((it) =>
+    it.id === item.id ? { ...item } : it
+  )
+
+  // Force Vue to see the change
+  customerList.value = [...customerList.value]
+
+}
+
+function filterCustomers() {
+    if (search.value.trim() === '') {
+        customerList.value = [...props.customers ?? []]
+    } else {
+        const searchTerm = search.value.toLowerCase()
+        customerList.value = (props.customers ?? []).filter((customer) =>
+            customer.fname.toLowerCase().includes(searchTerm) ||
+            customer.email.toLowerCase().includes(searchTerm)
+        )
+    }
+}
+
 </script>
 <template>
      <Head title="Order"/>
@@ -39,9 +64,9 @@ function addCustomer(customer: any) {
 <AddCustomer v-on:customer-added="addCustomer"/>
 <div>
     <!-- Your template content goes here -->
-
+   <input type="text" v-model="search" placeholder="Search Customers..." @change="filterCustomers" class="border p-2 mb-4 w-full"/>
    <div v-for="customer in customerList" :key="customer.id" class="mb-4">
-    <p>{{ customer.fname }} {{ customer.lname }} - {{ customer.email }} - {{ customer.contact_no }}</p>
+    <ListCustomer :customer="customer" v-on:customer-updated="updateCustomer"/>
 
    </div>
 </div>

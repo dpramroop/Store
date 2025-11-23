@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,6 +21,12 @@ class Item extends Model
         protected $casts = [
         'attributes' => 'array',
     ];
+
+public function scopeSearch($query,$value)
+    {
+        $query->where('name','like',"%{$value}%")->orWhere('category','like',"%{$value}%");
+    }
+
 
     public function orderSalesItems()
     {

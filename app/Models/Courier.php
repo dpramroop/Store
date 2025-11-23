@@ -4,23 +4,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Customer extends Model
+class Courier extends Model
 {
     //
-use HasFactory;
-    protected $table = 'customer';
+    use HasFactory;
+    protected $table = 'courier';
     protected $fillable = [
         'fname',
         'lname',
         'email',
         'contact_no',
+        'cost'
 
 
     ];
-
-    public function scopeSearch($query,$value)
-    {
-        $query->where('name','like',"%{$value}%")->orWhere('contact_no','like',"%{$value}%");
-    }
-
 }
