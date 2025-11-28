@@ -126,8 +126,8 @@ function submitForm() {
           </div>
 
             <div class="field">
-            <label for="stockquantity">Price</label>
-            <input id="stockquantity" v-model="form.price" type="text" />
+            <label for="price">Price</label>
+            <input id="price" v-model="form.price" type="text" />
           </div>
 
           <section class="attributes">

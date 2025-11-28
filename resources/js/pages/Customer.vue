@@ -9,18 +9,20 @@ import { type BreadcrumbItem } from '@/types';
 import { Head} from '@inertiajs/vue3';
 import AddCustomer from './Customer/AddCustomer.vue';
 import ListCustomer from './Customer/ListCustomer.vue';
+import AddOrder from './Order/AddOrder.vue';
 
 const props = defineProps<{
   message?: string
   customers: Array<any>
+  items:Array<any>
 }>()
 
 const search=ref('')
 const customerList = ref([...props.customers ?? []])
-
+const showAddOrder=ref(false)
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Item',
+        title: 'Customer',
         href: order().url,
     },
 ];
@@ -43,6 +45,10 @@ function updateCustomer(item: any) {
 
 }
 
+function openModal()
+{
+  showAddOrder.value=true
+}
 function filterCustomers() {
     if (search.value.trim() === '') {
         customerList.value = [...props.customers ?? []]
@@ -62,11 +68,15 @@ function filterCustomers() {
 <app-layout :breadcrumbs="breadcrumbs">
 <h1>Hello Customer</h1>
 <AddCustomer v-on:customer-added="addCustomer"/>
+<div v-show="showAddOrder">
+<AddOrder />
+</div>
+
 <div>
     <!-- Your template content goes here -->
    <input type="text" v-model="search" placeholder="Search Customers..." @change="filterCustomers" class="border p-2 mb-4 w-full"/>
    <div v-for="customer in customerList" :key="customer.id" class="mb-4">
-    <ListCustomer :customer="customer" v-on:customer-updated="updateCustomer"/>
+    <ListCustomer :customer="customer"   v-on:customer-updated="updateCustomer" v-on:open-modal="openModal"/>
 
    </div>
 </div>

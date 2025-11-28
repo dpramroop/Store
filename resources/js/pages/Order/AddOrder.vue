@@ -7,11 +7,12 @@ const showDialog = ref(false)
 
 // Form state
 
-const props=defineProps<{
-    items:any
-}>()
+// const props=defineProps<{
+//     items:any
+// }>()
 
-const categoryOptions = new Set (props.items.map((item: any) => item.category));
+
+// const categoryOptions = new Set (props.items.map((item: any) => item.category));
 const emit = defineEmits<{ (e: 'item-added', item: any): void }>()
 const form = useForm({
   name: '',
@@ -76,17 +77,17 @@ function submitForm() {
 <template>
   <div>
     <!-- Button to open modal -->
-    <button @click="showDialog = true">Order</button>
+    <!-- <button @click="showDialog = true">Order</button> -->
 
     <!-- Modal -->
-    <Dialog v-if="showDialog" @close="showDialog = false" class="modal-overlay">
+    <Dialog  class="modal-overlay">
       <div class="modal-content">
-        <h1>Add Item</h1>
-
+        <h1>Add Order</h1>
+        <h1>HELLLOO</h1>
         <Form @submit.prevent="submitForm"  class="form">
 
-            <div class="field">
-                <button type="button" v-for="category in categoryOptions" :key="category">
+            <!-- <div class="field">
+                <button type="button" class="border bg-blue-800" v-for="category in categoryOptions" :key="category">
                     {{ category }}
                 </button>
             </div>
@@ -94,7 +95,7 @@ function submitForm() {
           <div class="actions">
             <button type="submit">Save Item</button>
             <button type="button" @click="showDialog = false">Cancel</button>
-          </div>
+          </div> -->
         </Form>
       </div>
     </Dialog>
@@ -173,6 +174,9 @@ function submitForm() {
   border: 1px solid #ddd;
   padding: 4px 8px;
   cursor: pointer;
+}
+.border-b-blue-800 {
+    border-bottom-color: var(--color-blue-800) /* oklch(42.4% 0.199 265.638) = #193cb8 */;
 }
 
 .actions {

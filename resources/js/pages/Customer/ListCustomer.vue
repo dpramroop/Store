@@ -10,7 +10,7 @@
                 </svg>
             </button>
             <UpdateCustomer :customer_given="customer" v-on:customer-updated="notifyUpdate"/>
-            
+              <button @click="openModal(customer)" class="border bg-indigo-700">Add Order</button>
         </header>
 
         <transition name="fade">
@@ -38,9 +38,11 @@ defineProps({
             contact_no: ''
         })
     }
-})
+}
+)
 const emits = defineEmits<{
-    (e: 'customer-updated', customer: any): void
+    (e: 'customer-updated', customer: any): void,
+    (e: 'open-modal', customer: any): void
 }>()
 
 const open = ref(false)
@@ -49,6 +51,10 @@ function toggle() {
 }
 function notifyUpdate(updatedCustomer: any) {
     emits('customer-updated', updatedCustomer)
+}
+
+function openModal(id:any) {
+  emits('open-modal', id)
 }
 </script>
 

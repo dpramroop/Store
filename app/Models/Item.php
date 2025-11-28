@@ -17,6 +17,7 @@ class Item extends Model
         'category',
         'attributes',
         'stock_quantity',
+        'price'
     ];
         protected $casts = [
         'attributes' => 'array',

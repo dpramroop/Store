@@ -15,7 +15,7 @@ class CustomerController extends Controller
     {
 
         return Inertia::render('Customer', [
-            'message' => 'This is a message from Laravel!','customers' => Customer::all()
+            'message' => 'This is a message from Laravel!','customers' => Customer::all(),'items'=>Item::all()
         ]);
     }
 
