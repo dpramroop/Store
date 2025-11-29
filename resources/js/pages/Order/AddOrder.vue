@@ -2,18 +2,23 @@
 import { useForm } from '@inertiajs/vue3'
 import { ref, defineProps,defineEmits } from 'vue';
 import {store} from '@/actions/App/Http/Controllers/ItemController';
+
 // Dialog visibility
 const showDialog = ref(false)
 
 // Form state
 
-// const props=defineProps<{
-//     items:any
-// }>()
+const props=defineProps<{
+    items:any
+    customer:any
+}>()
 
+const barcode=ref('')
 
-// const categoryOptions = new Set (props.items.map((item: any) => item.category));
-const emit = defineEmits<{ (e: 'item-added', item: any): void }>()
+const categoryOptions = new Set (props.items.map((item: any) => item.category));
+const emit = defineEmits<{ (e: 'close-ordermodal', item: any): void
+
+ }>()
 const form = useForm({
   name: '',
   description: '',
@@ -23,6 +28,8 @@ const form = useForm({
   price: '',
 
 })
+
+
 
 // const form = reactive({
 //   name: '',
@@ -39,6 +46,10 @@ const form = useForm({
 
 
 // Submit form
+function closeModal()
+{
+    emit('close-ordermodal','')
+}
 function submitForm() {
   if (!form.name.trim()) {
     alert('Item name is required.')
@@ -48,7 +59,7 @@ function submitForm() {
    form.post(store().url, {
    onSuccess: ({ }) => {
     console.log('Item successfully submitted:', { ...form })
-  emit('item-added', form.data())
+  emit('close-ordermodal', form.data())
     form.reset() // ✅ reset only after success
       showDialog.value = false
 
@@ -84,9 +95,10 @@ function submitForm() {
       <div class="modal-content">
         <h1>Add Order</h1>
         <h1>HELLLOO</h1>
+        <h1>{{ customer.fname }}</h1>
         <Form @submit.prevent="submitForm"  class="form">
-
-            <!-- <div class="field">
+           <input type="text" v-model="barcode" placeholder="FILL IN Barcode or Name">
+            <div class="field grid grid-cols-4 gap-4">
                 <button type="button" class="border bg-blue-800" v-for="category in categoryOptions" :key="category">
                     {{ category }}
                 </button>
@@ -94,8 +106,8 @@ function submitForm() {
 
           <div class="actions">
             <button type="submit">Save Item</button>
-            <button type="button" @click="showDialog = false">Cancel</button>
-          </div> -->
+            <button type="button" @click="closeModal">Cancel</button>
+          </div>
         </Form>
       </div>
     </Dialog>

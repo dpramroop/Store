@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import { ref,defineProps,defineEmits } from 'vue'
 import UpdateCustomer from './UpdateCustomer.vue'
-import AddOrder from '../Order/AddOrder.vue';
+
 defineProps({
     customer: {
         type: Object,

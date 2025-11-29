@@ -11,6 +11,7 @@ import AddCustomer from './Customer/AddCustomer.vue';
 import ListCustomer from './Customer/ListCustomer.vue';
 import AddOrder from './Order/AddOrder.vue';
 
+
 const props = defineProps<{
   message?: string
   customers: Array<any>
@@ -18,6 +19,7 @@ const props = defineProps<{
 }>()
 
 const search=ref('')
+const customer=ref(Object)
 const customerList = ref([...props.customers ?? []])
 const showAddOrder=ref(false)
 const breadcrumbs: BreadcrumbItem[] = [
@@ -45,9 +47,12 @@ function updateCustomer(item: any) {
 
 }
 
-function openModal()
+function openModal(chosencustomer:any)
 {
-  showAddOrder.value=true
+   
+      customer.value=chosencustomer
+  showAddOrder.value=!showAddOrder.value
+
 }
 function filterCustomers() {
     if (search.value.trim() === '') {
@@ -69,7 +74,8 @@ function filterCustomers() {
 <h1>Hello Customer</h1>
 <AddCustomer v-on:customer-added="addCustomer"/>
 <div v-show="showAddOrder">
-<AddOrder />
+<AddOrder :customer="customer" :items="items" v-on:close-ordermodal="openModal" />
+
 </div>
 
 <div>

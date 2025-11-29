@@ -17,6 +17,11 @@ class OrderController extends Controller
         ]);
     }
 
+    public function getItems()
+    {
+        return Inertia::render('Order/AddOrder',['items'=>Item::all()]);
+    }
+
     public function store(Request $request)
     {
  Log::info('Order created:', $request->all());
