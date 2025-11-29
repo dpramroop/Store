@@ -7,12 +7,13 @@ import {store} from '@/actions/App/Http/Controllers/ItemController';
 const showDialog = ref(false)
 
 // Form state
-
+const orders:any=ref([])
 const props=defineProps<{
     items:any
     customer:any
 }>()
-
+const items= ref([...props.items])
+const listeditem:any=ref([])
 const barcode=ref('')
 
 const categoryOptions = new Set (props.items.map((item: any) => item.category));
@@ -29,8 +30,16 @@ const form = useForm({
 
 })
 
+function categoryChosen(categoryOption:any)
+{
+  listeditem.value = items.value.filter((i:any)=> i.category==categoryOption)
+}
 
+function cart(item:any)
+{
+    orders.value.push(item)
 
+}
 // const form = reactive({
 //   name: '',
 //   description: '',
@@ -96,19 +105,43 @@ function submitForm() {
         <h1>Add Order</h1>
         <h1>HELLLOO</h1>
         <h1>{{ customer.fname }}</h1>
+        <div class="flex grid-cols-2 gap-4">
+
+        <div>
         <Form @submit.prevent="submitForm"  class="form">
            <input type="text" v-model="barcode" placeholder="FILL IN Barcode or Name">
             <div class="field grid grid-cols-4 gap-4">
-                <button type="button" class="border bg-blue-800" v-for="category in categoryOptions" :key="category">
+                <button @click="categoryChosen(category)" type="button" class="border bg-red-800" v-for="category in categoryOptions" :key="category">
                     {{ category }}
                 </button>
             </div>
+   <div class="field grid grid-cols-4 gap-4">
+                <button @click="cart(li)" type="button" class="border bg-blue-300" v-for="li in listeditem" :key="li">
+                    {{ li.name }}
+                </button>
+            </div>
+
 
           <div class="actions">
             <button type="submit">Save Item</button>
             <button type="button" @click="closeModal">Cancel</button>
           </div>
         </Form>
+</div>
+
+
+
+   <div class="">
+            <div class="flex grid-cols-3 gap-3" v-for="order in orders" :key="order">
+             <h2>{{order.name}}</h2>
+             <button>1</button>
+             <h2>{{order.price * 2}}</h2>
+              <button>1</button>
+             </div>
+        </div>
+
+
+    </div>
       </div>
     </Dialog>
   </div>
