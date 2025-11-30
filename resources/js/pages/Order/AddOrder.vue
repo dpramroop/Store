@@ -7,6 +7,7 @@ import {store} from '@/actions/App/Http/Controllers/ItemController';
 const showDialog = ref(false)
 const quantity=ref(1)
 const total:any=ref([])
+const totalcost:any=ref(0)
 // Form state
 const orders:any=ref([])
 const props=defineProps<{
@@ -35,7 +36,11 @@ function addquantity(index:any)
 {
     quantity.value=quantity.value+1
     orders.value[index].price= orders.value[index].price *quantity.value
-    alert(JSON.stringify(orders.value[index].price))
+    total.value[index]=orders.value[index].price
+    total.value.forEach((x:any) => {
+    totalcost.value += x;
+});
+
 }
 function removequantity()
 {
@@ -165,7 +170,7 @@ function submitForm() {
              </div>
              <div >
 
-                <h1 class="">TOTAL: {{ total}} </h1>
+                <h1 class="">TOTAL: {{ totalcost}} </h1>
              </div>
         </div>
 
