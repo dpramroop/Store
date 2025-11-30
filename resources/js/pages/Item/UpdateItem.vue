@@ -24,6 +24,7 @@ const form = useForm({
   category: props.item_given.category || '',
   stock_quantity: props.item_given.stock_quantity || '',
   attributes: props.item_given.attributes || [] as Attribute[],
+  price:props.item_given.price || ''
 })
 
 // const form = reactive({
@@ -127,6 +128,11 @@ function submitForm() {
            <div class="field">
             <label for="stockquantity">Stock Quantity</label>
             <input id="stockquantity" v-model="form.stock_quantity" type="text" />
+          </div>
+
+                  <div class="field">
+            <label for="price">Price</label>
+            <input id="price" v-model="form.price" type="text" />
           </div>
 
           <section class="attributes">

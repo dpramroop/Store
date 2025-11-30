@@ -5,7 +5,8 @@ import {store} from '@/actions/App/Http/Controllers/ItemController';
 
 // Dialog visibility
 const showDialog = ref(false)
-
+const quantity=ref(1)
+const total:any=ref([])
 // Form state
 const orders:any=ref([])
 const props=defineProps<{
@@ -30,6 +31,24 @@ const form = useForm({
 
 })
 
+function addquantity(index:any)
+{
+    quantity.value=quantity.value+1
+    orders.value[index].price= orders.value[index].price *quantity.value
+    alert(JSON.stringify(orders.value[index].price))
+}
+function removequantity()
+{
+    if(quantity.value==1)
+{
+    quantity.value=1
+}
+else{
+quantity.value=quantity.value-1
+}
+
+}
+
 function categoryChosen(categoryOption:any)
 {
   listeditem.value = items.value.filter((i:any)=> i.category==categoryOption)
@@ -38,7 +57,7 @@ function categoryChosen(categoryOption:any)
 function cart(item:any)
 {
     orders.value.push(item)
-
+    total.value.push(item.price)
 }
 // const form = reactive({
 //   name: '',
@@ -55,8 +74,10 @@ function cart(item:any)
 
 
 // Submit form
+
 function closeModal()
 {
+
     emit('close-ordermodal','')
 }
 function submitForm() {
@@ -132,11 +153,19 @@ function submitForm() {
 
 
    <div class="">
-            <div class="flex grid-cols-3 gap-3" v-for="order in orders" :key="order">
+            <div class="flex grid-cols-3 gap-3" v-for="(order,index) in orders" :index="index" :key="order.id">
              <h2>{{order.name}}</h2>
-             <button>1</button>
-             <h2>{{order.price * 2}}</h2>
-              <button>1</button>
+             <h2>{{order.price}}</h2>
+             <h2>{{quantity}}</h2>
+               <h2>{{index}}</h2>
+
+              <button @click="removequantity">-</button>
+
+              <button @click="addquantity(index)">+</button>
+             </div>
+             <div >
+
+                <h1 class="">TOTAL: {{ total}} </h1>
              </div>
         </div>
 

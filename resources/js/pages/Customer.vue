@@ -17,7 +17,7 @@ const props = defineProps<{
   customers: Array<any>
   items:Array<any>
 }>()
-
+const modalKey = ref(0)
 const search=ref('')
 const customer=ref(Object)
 const customerList = ref([...props.customers ?? []])
@@ -49,7 +49,7 @@ function updateCustomer(item: any) {
 
 function openModal(chosencustomer:any)
 {
-   
+modalKey.value++
       customer.value=chosencustomer
   showAddOrder.value=!showAddOrder.value
 
@@ -74,7 +74,7 @@ function filterCustomers() {
 <h1>Hello Customer</h1>
 <AddCustomer v-on:customer-added="addCustomer"/>
 <div v-show="showAddOrder">
-<AddOrder :customer="customer" :items="items" v-on:close-ordermodal="openModal" />
+<AddOrder :key="modalKey" :customer="customer" :items="items" v-on:close-ordermodal="openModal" />
 
 </div>
 
