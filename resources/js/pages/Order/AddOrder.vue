@@ -35,22 +35,22 @@ const form = useForm({
 function addquantity(index:any)
 { totalcost.value=0
     quantity.value=orders.value[index].quantity+1
-    total.value[index]= orders.value[index].item.price *quantity.value
+    orders.value[index].total= orders.value[index].item.price *quantity.value
     orders.value[index].quantity=quantity.value
-    total.value.forEach((x:any) => {
-    totalcost.value= parseFloat(totalcost.value) + parseFloat(x);
+    orders.value.forEach((x:any) => {
+    totalcost.value= parseFloat(totalcost.value) + parseFloat(x.total);
 });
 
 }
-function removequantity()
+function removequantity(index:any)
 {
-    if(quantity.value==1)
-{
-    quantity.value=1
-}
-else{
-quantity.value=quantity.value-1
-}
+    totalcost.value=0
+    quantity.value=orders.value[index].quantity-1
+    orders.value[index].total= orders.value[index].item.price *quantity.value
+    orders.value[index].quantity=quantity.value
+    orders.value.forEach((x:any) => {
+    totalcost.value= parseFloat(totalcost.value) + parseFloat(x.total);
+});
 
 }
 
@@ -60,12 +60,12 @@ function categoryChosen(categoryOption:any)
 }
 
 function cart(item:any)
-{
-    orders.value.push({"item":item,"quantity":quantity.value})
+{  totalcost.value=0
+    orders.value.push({"item":item,"quantity":quantity.value,"total":item.price * quantity.value})
     total.value.push(item.price)
 
-    total.value.forEach((x:any) => {
-    totalcost.value +=  parseFloat(x);
+    orders.value.forEach((x:any) => {
+    totalcost.value +=  parseFloat(x.total);
     })
 }
 // const form = reactive({
@@ -164,11 +164,11 @@ function submitForm() {
    <div class="">
             <div class="flex grid-cols-3 gap-3" v-for="(order,index) in orders" :index="index" :key="order.id">
              <h2>{{order.item.name}}</h2>
-             <h2>{{total[index]}}</h2>
+             <h2>{{order.total}}</h2>
              <h2>{{order.quantity}}</h2>
                <h2>{{index}}</h2>
 
-              <button @click="removequantity">-</button>
+              <button @click="removequantity(index)">-</button>
 
               <button @click="addquantity(index)">+</button>
              </div>
