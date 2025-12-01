@@ -33,12 +33,12 @@ const form = useForm({
 })
 
 function addquantity(index:any)
-{
-    quantity.value=quantity.value+1
-    orders.value[index].price= orders.value[index].price *quantity.value
-    total.value[index]=orders.value[index].price
+{ totalcost.value=0
+    quantity.value=orders.value[index].quantity+1
+    total.value[index]= orders.value[index].item.price *quantity.value
+    orders.value[index].quantity=quantity.value
     total.value.forEach((x:any) => {
-    totalcost.value += x;
+    totalcost.value= parseFloat(totalcost.value) + parseFloat(x);
 });
 
 }
@@ -61,8 +61,12 @@ function categoryChosen(categoryOption:any)
 
 function cart(item:any)
 {
-    orders.value.push(item)
+    orders.value.push({"item":item,"quantity":quantity.value})
     total.value.push(item.price)
+
+    total.value.forEach((x:any) => {
+    totalcost.value +=  parseFloat(x);
+    })
 }
 // const form = reactive({
 //   name: '',
@@ -159,9 +163,9 @@ function submitForm() {
 
    <div class="">
             <div class="flex grid-cols-3 gap-3" v-for="(order,index) in orders" :index="index" :key="order.id">
-             <h2>{{order.name}}</h2>
-             <h2>{{order.price}}</h2>
-             <h2>{{quantity}}</h2>
+             <h2>{{order.item.name}}</h2>
+             <h2>{{total[index]}}</h2>
+             <h2>{{order.quantity}}</h2>
                <h2>{{index}}</h2>
 
               <button @click="removequantity">-</button>
@@ -170,7 +174,7 @@ function submitForm() {
              </div>
              <div >
 
-                <h1 class="">TOTAL: {{ totalcost}} </h1>
+                <h1 class="">{{totalcost}} </h1>
              </div>
         </div>
 
