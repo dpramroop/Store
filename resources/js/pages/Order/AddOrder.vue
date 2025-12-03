@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3'
 import { ref, defineProps,defineEmits } from 'vue';
-import {store} from '@/actions/App/Http/Controllers/ItemController';
+import {store} from '@/actions/App/Http/Controllers/OrderController';
 
 // Dialog visibility
 const showDialog = ref(false)
 const quantity=ref(1)
 const total:any=ref([])
-const totalcost:any=ref(0)
+// const totalcost:any=ref(0)
 // Form state
 const orders:any=ref([])
 const props=defineProps<{
@@ -23,33 +23,30 @@ const emit = defineEmits<{ (e: 'close-ordermodal', item: any): void
 
  }>()
 const form = useForm({
-  name: '',
-  description: '',
-  brand: '',
-  category: '',
-  quantity: '',
-  price: '',
+customer_id:props.customer.id,
+totalprice:0,
+status:'placed'
 
 })
 
 function addquantity(index:any)
-{ totalcost.value=0
+{ form.totalprice=0
     quantity.value=orders.value[index].quantity+1
     orders.value[index].total= orders.value[index].item.price *quantity.value
     orders.value[index].quantity=quantity.value
     orders.value.forEach((x:any) => {
-    totalcost.value= parseFloat(totalcost.value) + parseFloat(x.total);
+    form.totalprice= form.totalprice + parseFloat(x.total);
 });
 
 }
 function removequantity(index:any)
 {
-    totalcost.value=0
+    form.totalprice=0
     quantity.value=orders.value[index].quantity-1
     orders.value[index].total= orders.value[index].item.price *quantity.value
     orders.value[index].quantity=quantity.value
     orders.value.forEach((x:any) => {
-    totalcost.value= parseFloat(totalcost.value) + parseFloat(x.total);
+   form.totalprice= form.totalprice + parseFloat(x.total);
 });
 
 }
@@ -60,12 +57,12 @@ function categoryChosen(categoryOption:any)
 }
 
 function cart(item:any)
-{  totalcost.value=0
+{  form.totalprice=0
     orders.value.push({"item":item,"quantity":quantity.value,"total":item.price * quantity.value})
     total.value.push(item.price)
 
     orders.value.forEach((x:any) => {
-    totalcost.value +=  parseFloat(x.total);
+    form.totalprice +=  parseFloat(x.total);
     })
 }
 // const form = reactive({
@@ -90,14 +87,15 @@ function closeModal()
     emit('close-ordermodal','')
 }
 function submitForm() {
-  if (!form.name.trim()) {
-    alert('Item name is required.')
+    alert(JSON.stringify(form.data()))
+  if (!form.customer_id.trim()) {
+    alert('Customer is required.')
     return
   }
 
    form.post(store().url, {
    onSuccess: ({ }) => {
-    console.log('Item successfully submitted:', { ...form })
+    console.log('Order successfully submitted:', { ...form })
   emit('close-ordermodal', form.data())
     form.reset() // ✅ reset only after success
       showDialog.value = false
@@ -138,7 +136,7 @@ function submitForm() {
         <div class="flex grid-cols-2 gap-4">
 
         <div>
-        <Form @submit.prevent="submitForm"  class="form">
+
            <input type="text" v-model="barcode" placeholder="FILL IN Barcode or Name">
             <div class="field grid grid-cols-4 gap-4">
                 <button @click="categoryChosen(category)" type="button" class="border bg-red-800" v-for="category in categoryOptions" :key="category">
@@ -152,21 +150,18 @@ function submitForm() {
             </div>
 
 
-          <div class="actions">
-            <button type="submit">Save Item</button>
-            <button type="button" @click="closeModal">Cancel</button>
-          </div>
-        </Form>
+
 </div>
 
 
 
    <div class="">
+     <Form @submit.prevent="submitForm"  class="form">
             <div class="flex grid-cols-3 gap-3" v-for="(order,index) in orders" :index="index" :key="order.id">
              <h2>{{order.item.name}}</h2>
              <h2>{{order.total}}</h2>
              <h2>{{order.quantity}}</h2>
-               <h2>{{index}}</h2>
+
 
               <button @click="removequantity(index)">-</button>
 
@@ -174,8 +169,14 @@ function submitForm() {
              </div>
              <div >
 
-                <h1 class="">{{totalcost}} </h1>
+                <h1 class="">{{form.totalprice}} </h1>
              </div>
+
+          <div class="actions">
+            <button type="submit">Save Item</button>
+            <button type="button" @click="closeModal">Cancel</button>
+          </div>
+         </Form>
         </div>
 
 

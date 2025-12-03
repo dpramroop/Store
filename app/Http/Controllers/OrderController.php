@@ -28,28 +28,20 @@ class OrderController extends Controller
 
         // Validate your data
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'brand' => 'nullable|string',
-            'category' => 'nullable|string',
-            'stock_quantity' => 'nullable|integer',
-            'attributes' => 'nullable|array',
-            'price' => 'nullable|numeric',
+            'customer_id' => 'required|string|max:255',
+            'totalprice' => 'nullable|numeric',
+            'status' => 'nullable|string',
         ]);
 
         // Create the new item
-        $item = Item::create([
-            'name' => $validated['name'],
-            'description' => $validated['description'] ?? null,
-            'brand' => $validated['brand'] ?? null,
-            'category' => $validated['category'] ?? null,
-            'stock_quantity' => $validated['stock_quantity'] ?? 0,
-            'attributes' => $request->input('attributes', []),
-            'price' => $validated['price'] ?? 0,
+        $order = Order::create([
+            'customer_id' => $validated['customer_id'],
+            'status' => $validated['status'] ?? null,
+            'totalprice' => $validated['totalprice'] ?? 0,
         ]);
 
         // Return JSON response for Inertia
-        return  redirect()->route('item')->with('success', 'Item added!');
+        return  redirect()->route('order')->with('success', 'Order added!');
     }
 
     public function update(Request $request)

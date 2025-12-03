@@ -23,6 +23,7 @@ Route::post('/updateitem/{id}', [ItemController::class, 'update'])->middleware([
 
 Route::get('/Order', [OrderController::class, 'show'])->middleware(['auth', 'verified'])->name('order');
 Route::get('/getItems', [OrderController::class, 'getItems'])->middleware(['auth', 'verified'])->name('getItems');
+Route::post('/addOrder', [OrderController::class, 'store'])->middleware(['auth', 'verified'])->name('order.store');
 
 Route::get('/Customer', [CustomerController::class, 'show'])->middleware(['auth', 'verified'])->name('customer');
 Route::post('/addCustomer', [CustomerController::class, 'store'])->middleware(['auth', 'verified'])->name('customer.store');
