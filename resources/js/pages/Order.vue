@@ -33,8 +33,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 
     <div v-for="order in orderList" :key="order.id" class="mb-4">
         <p>Order ID: {{ order.id }}</p>
-     
-        <p>Total Amount: {{ order.total_amount }}</p>
+
+        <p>Total Amount: ${{ order.totalprice }}</p>
         <hr />
     </div>
 

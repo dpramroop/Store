@@ -3,13 +3,21 @@ import { useForm } from '@inertiajs/vue3'
 import { ref, defineProps,defineEmits } from 'vue';
 import {store} from '@/actions/App/Http/Controllers/OrderController';
 
+
+interface OrdersInterface
+{
+   item:any,
+   totalcost:number,
+   quantity:number
+}
 // Dialog visibility
 const showDialog = ref(false)
 const quantity=ref(1)
-const total:any=ref([])
+// const total:any=ref([])
+
 // const totalcost:any=ref(0)
 // Form state
-const orders:any=ref([])
+// const orders:any=ref([])
 const props=defineProps<{
     items:any
     customer:any
@@ -25,28 +33,29 @@ const emit = defineEmits<{ (e: 'close-ordermodal', item: any): void
 const form = useForm({
 customer_id:props.customer.id,
 totalprice:0,
-status:'placed'
-
+status:'placed',
+orders:[] as OrdersInterface[]
 })
 
 function addquantity(index:any)
-{ form.totalprice=0
-    quantity.value=orders.value[index].quantity+1
-    orders.value[index].total= orders.value[index].item.price *quantity.value
-    orders.value[index].quantity=quantity.value
-    orders.value.forEach((x:any) => {
-    form.totalprice= form.totalprice + parseFloat(x.total);
+{     form.totalprice=0
+    quantity.value=form.orders[index].quantity+1
+    form.orders[index].totalcost= form.orders[index].item.price *quantity.value
+    form.orders[index].quantity=quantity.value
+    form.orders.forEach((x:any) => {
+   form.totalprice= form.totalprice + parseFloat(x.totalcost);
 });
+
 
 }
 function removequantity(index:any)
 {
     form.totalprice=0
-    quantity.value=orders.value[index].quantity-1
-    orders.value[index].total= orders.value[index].item.price *quantity.value
-    orders.value[index].quantity=quantity.value
-    orders.value.forEach((x:any) => {
-   form.totalprice= form.totalprice + parseFloat(x.total);
+    quantity.value=form.orders[index].quantity-1
+    form.orders[index].totalcost= form.orders[index].item.price *quantity.value
+    form.orders[index].quantity=quantity.value
+    form.orders.forEach((x:any) => {
+   form.totalprice= form.totalprice + parseFloat(x.totalcost);
 });
 
 }
@@ -58,11 +67,14 @@ function categoryChosen(categoryOption:any)
 
 function cart(item:any)
 {  form.totalprice=0
-    orders.value.push({"item":item,"quantity":quantity.value,"total":item.price * quantity.value})
-    total.value.push(item.price)
+    const totalcost=item.price
+    const quantity=1
+     form.orders.push({item, totalcost, quantity})
+   // orders.value.push({"item":item,"quantity":quantity.value,"total":item.price * quantity.value})
+    // total.value.push(item.price)
 
-    orders.value.forEach((x:any) => {
-    form.totalprice +=  parseFloat(x.total);
+    form.orders.forEach((x:any) => {
+    form.totalprice +=  parseFloat(x.totalcost);
     })
 }
 // const form = reactive({
@@ -87,11 +99,8 @@ function closeModal()
     emit('close-ordermodal','')
 }
 function submitForm() {
-    alert(JSON.stringify(form.data()))
-  if (!form.customer_id.trim()) {
-    alert('Customer is required.')
-    return
-  }
+
+
 
    form.post(store().url, {
    onSuccess: ({ }) => {
@@ -139,7 +148,7 @@ function submitForm() {
 
            <input type="text" v-model="barcode" placeholder="FILL IN Barcode or Name">
             <div class="field grid grid-cols-4 gap-4">
-                <button @click="categoryChosen(category)" type="button" class="border bg-red-800" v-for="category in categoryOptions" :key="category">
+                <button @click="categoryChosen(category)" type="button" class="border bg-red-800" v-for="category,index in categoryOptions" :key="index">
                     {{ category }}
                 </button>
             </div>
@@ -157,15 +166,15 @@ function submitForm() {
 
    <div class="">
      <Form @submit.prevent="submitForm"  class="form">
-            <div class="flex grid-cols-3 gap-3" v-for="(order,index) in orders" :index="index" :key="order.id">
+            <div class="flex grid-cols-3 gap-3" v-for="(order,index) in form.orders" :index="index" :key="index">
              <h2>{{order.item.name}}</h2>
-             <h2>{{order.total}}</h2>
+             <h2>{{order.totalcost}}</h2>
              <h2>{{order.quantity}}</h2>
 
 
-              <button @click="removequantity(index)">-</button>
+              <button type="button" @click="removequantity(index)">-</button>
 
-              <button @click="addquantity(index)">+</button>
+              <button type="button" @click="addquantity(index)">+</button>
              </div>
              <div >
 
