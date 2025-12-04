@@ -41,6 +41,9 @@ return new class extends Migration
             $table->string('fname');
             $table->string('lname');
             $table->string('email')->unique();
+            $table->string('address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('direction')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('contact_no')->unique();
             $table->string('password')->nullable();
@@ -99,6 +102,24 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('contact_no')->unique();
             $table->decimal('cost', 8, 2);
+            $table->rememberToken();
+            $table->timestamps();
+        });
+
+               Schema::create('courier_order', function (Blueprint $table) {
+            $table->id();
+            $table->integer('order_id');
+            $table->integer('courier_id');
+            $table->integer('status');
+            $table->rememberToken();
+            $table->timestamps();
+        });
+
+            Schema::create('payment', function (Blueprint $table) {
+            $table->id();
+            $table->integer('order_id');
+            $table->string('payment_type');
+            $table->date('payment_date');
             $table->rememberToken();
             $table->timestamps();
         });

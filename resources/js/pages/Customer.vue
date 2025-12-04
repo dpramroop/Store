@@ -16,6 +16,7 @@ const props = defineProps<{
   message?: string
   customers: Array<any>
   items:Array<any>
+  courier:Array<any>
 }>()
 const modalKey = ref(0)
 const search=ref('')

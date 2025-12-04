@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use App\Models\Item;
+use App\Models\Courier;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -15,7 +16,7 @@ class CustomerController extends Controller
     {
 
         return Inertia::render('Customer', [
-            'message' => 'This is a message from Laravel!','customers' => Customer::all(),'items'=>Item::all()
+            'message' => 'This is a message from Laravel!','customers' => Customer::all(),'items'=>Item::all(),'couriers'=>Courier::all()
         ]);
     }
 
