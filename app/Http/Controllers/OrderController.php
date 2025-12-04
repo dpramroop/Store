@@ -25,39 +25,36 @@ class OrderController extends Controller
     public function store(Request $request)
     {
  Log::info('Order created:', $request->all());
- foreach ($request->orders as $oo)
- {
- Log::info('Orderitem:', $oo);
- }
+
 
         // Validate your data
-        // $validated = $request->validate([
-        //     'customer_id' => 'required|numeric',
-        //     'totalprice' => 'nullable|numeric',
-        //     'status' => 'nullable|string',
-        // ]);
+        $validated = $request->validate([
+            'customer_id' => 'required|numeric',
+            'totalprice' => 'nullable|numeric',
+            'status' => 'nullable|string',
+        ]);
 
-        // // Create the new item
-        // $order = Order::create([
-        //     'customer_id' => $validated['customer_id'],
-        //     'status' => $validated['status'] ?? null,
-        //     'totalprice' => $validated['totalprice'] ?? 0,
-        // ]);
+        // Create the new item
+        $order = Order::create([
+            'customer_id' => $validated['customer_id'],
+            'status' => $validated['status'] ?? null,
+            'totalprice' => $validated['totalprice'] ?? 0,
+        ]);
 
 
 
-//        foreach($request->orders as $orderitem)
-//        {
-//   OrderSalesItem::create(
-//             [
-//             'order_id'=>$order->id,
-//             'sales_item_id'=>$orderitem->item->id,
-//             'quantity'=>$orderitem->quantity,
-//             'cost'=>$orderitem->totalcost,
-//             ]
-//             );
+       foreach($request->orders as $orderitem)
+       {
+  OrderSalesItem::create(
+            [
+            'order_id'=>$order->id,
+            'sales_item_id'=>$orderitem['item']['id'],
+            'quantity'=>$orderitem['quantity'],
+            'cost'=>$orderitem['totalcost'],
+            ]
+            );
 
-//        }
+       }
 
         // Return JSON response for Inertia
         return  redirect()->route('order')->with('success', 'Order added!');
