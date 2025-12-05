@@ -16,7 +16,7 @@ const props = defineProps<{
   message?: string
   customers: Array<any>
   items:Array<any>
-  courier:Array<any>
+  couriers:Array<any>
 }>()
 const modalKey = ref(0)
 const search=ref('')
@@ -75,7 +75,7 @@ function filterCustomers() {
 <h1>Hello Customer</h1>
 <AddCustomer v-on:customer-added="addCustomer"/>
 <div v-show="showAddOrder">
-<AddOrder :key="modalKey" :customer="customer" :items="items" v-on:close-ordermodal="openModal" />
+<AddOrder :key="modalKey" :customer="customer" :couriers="couriers" :items="items" v-on:close-ordermodal="openModal" />
 
 </div>
 

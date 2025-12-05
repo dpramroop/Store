@@ -2,6 +2,7 @@
 import { useForm } from '@inertiajs/vue3'
 import { ref, defineProps,defineEmits } from 'vue';
 import {store} from '@/actions/App/Http/Controllers/OrderController';
+// import { index } from '@/actions/Laravel/Fortify/Http/Controllers/RecoveryCodeController';
 
 
 interface OrdersInterface
@@ -21,6 +22,7 @@ const quantity=ref(1)
 const props=defineProps<{
     items:any
     customer:any
+    couriers:any
 }>()
 const items= ref([...props.items])
 const listeditem:any=ref([])
@@ -44,6 +46,7 @@ function addquantity(index:any)
     form.orders[index].quantity=quantity.value
     form.orders.forEach((x:any) => {
    form.totalprice= form.totalprice + parseFloat(x.totalcost);
+
 });
 
 
@@ -176,10 +179,20 @@ function submitForm() {
 
               <button type="button" @click="addquantity(index)">+</button>
              </div>
+
+             <div></div>
+             <select>
+                <option v-for="(courier,index) in couriers" :index="index" :key="courier.id" value="{{ courier }}">
+                    {{ courier.fname }} {{ courier.lname }}
+                </option>
+             </select>
+
              <div >
 
-                <h1 class="">{{form.totalprice}} </h1>
+                <h1 class="">TOTAL ${{form.totalprice}} </h1>
              </div>
+
+
 
           <div class="actions">
             <button type="submit">Save Item</button>
