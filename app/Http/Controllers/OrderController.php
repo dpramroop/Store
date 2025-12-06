@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\CourierOrder;
 use App\Models\Item;
 use App\Models\Order;
 use App\Models\OrderSalesItem;
@@ -55,6 +57,15 @@ class OrderController extends Controller
             );
 
        }
+    if($request->courierpick!=null)
+    {
+   CourierOrder::create([
+         'order_id'=>$order->id,
+        'courier_id'=>$request->courierpick['id'],
+        'status'=>'placed',
+    ]);
+    }
+
 
         // Return JSON response for Inertia
         return  redirect()->route('order')->with('success', 'Order added!');
