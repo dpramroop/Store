@@ -11,6 +11,7 @@ interface OrdersInterface
    totalcost:number,
    quantity:number
 }
+
 // Dialog visibility
 const showDialog = ref(false)
 const quantity=ref(1)
@@ -28,7 +29,7 @@ const items= ref([...props.items])
 const listeditem:any=ref([])
 const barcode=ref('')
 const ifcourier= ref(false)
-const chosencourier:any= ref()
+
 
 const categoryOptions = new Set (props.items.map((item: any) => item.category));
 const emit = defineEmits<{ (e: 'close-ordermodal', item: any): void
@@ -38,31 +39,26 @@ const form = useForm({
 customer_id:props.customer.id,
 totalprice:0,
 status:'placed',
-orders:[] as OrdersInterface[]
+orders:[] as OrdersInterface[],
+courierpick: null as any | null
 })
 
 function addquantity(index:any)
-{     form.totalprice=0
+{
     quantity.value=form.orders[index].quantity+1
     form.orders[index].totalcost= form.orders[index].item.price *quantity.value
     form.orders[index].quantity=quantity.value
-    form.orders.forEach((x:any) => {
-   form.totalprice= form.totalprice + parseFloat(x.totalcost);
-
-});
+resettotal()
 
 
 }
 function removequantity(index:any)
 {
-    form.totalprice=0
+
     quantity.value=form.orders[index].quantity-1
     form.orders[index].totalcost= form.orders[index].item.price *quantity.value
     form.orders[index].quantity=quantity.value
-    form.orders.forEach((x:any) => {
-   form.totalprice= form.totalprice + parseFloat(x.totalcost);
-});
-
+       resettotal()
 }
 
 function categoryChosen(categoryOption:any)
@@ -71,21 +67,15 @@ function categoryChosen(categoryOption:any)
 }
 
 function cart(item:any)
-{  form.totalprice=0
+{
     const totalcost=item.price
     const quantity=1
      form.orders.push({item, totalcost, quantity})
    // orders.value.push({"item":item,"quantity":quantity.value,"total":item.price * quantity.value})
     // total.value.push(item.price)
-
-    form.orders.forEach((x:any) => {
-    form.totalprice +=  parseFloat(x.totalcost);
-    })
-
+courierChoice()
 }
 function resettotal()
-{
-    if(ifcourier.value==false)
 {
 form.totalprice=0
        form.orders.forEach((x:any) => {
@@ -93,19 +83,14 @@ form.totalprice=0
     })
 }
 
-}
+
 
 function courierChoice()
-{form.totalprice=0
-       form.orders.forEach((x:any) => {
-    form.totalprice +=  parseFloat(x.totalcost);
-    })
-    if(ifcourier.value)
-    {
-    form.totalprice += parseFloat(chosencourier.value.cost)
-
+{   const courier= form.courierpick
+    resettotal()
+  if (ifcourier.value && courier) {
+    form.totalprice += parseFloat(courier.cost)
     }
-
 }
 // const form = reactive({
 //   name: '',
@@ -206,9 +191,9 @@ function submitForm() {
 
               <button type="button" @click="addquantity(index)">+</button>
              </div>
-              <input type="checkbox" v-model="ifcourier" />
-             <div v-if="ifcourier" @click="resettotal">
-             <select v-model="chosencourier" @change="courierChoice">
+              <input type="checkbox" v-model="ifcourier"  @click="resettotal"/>
+             <div v-if="ifcourier" >
+             <select v-model="form.courierpick" @change="courierChoice">
                 <option v-for="(courier,index) in couriers" :index="index" :key="courier.id" :value="courier">
                     {{ courier.fname }} {{ courier.lname }}
                 </option>
