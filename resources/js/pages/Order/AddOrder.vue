@@ -27,6 +27,8 @@ const props=defineProps<{
 const items= ref([...props.items])
 const listeditem:any=ref([])
 const barcode=ref('')
+const ifcourier= ref(false)
+const chosencourier:any= ref()
 
 const categoryOptions = new Set (props.items.map((item: any) => item.category));
 const emit = defineEmits<{ (e: 'close-ordermodal', item: any): void
@@ -79,6 +81,31 @@ function cart(item:any)
     form.orders.forEach((x:any) => {
     form.totalprice +=  parseFloat(x.totalcost);
     })
+
+}
+function resettotal()
+{
+    if(ifcourier.value==false)
+{
+form.totalprice=0
+       form.orders.forEach((x:any) => {
+    form.totalprice +=  parseFloat(x.totalcost);
+    })
+}
+
+}
+
+function courierChoice()
+{form.totalprice=0
+       form.orders.forEach((x:any) => {
+    form.totalprice +=  parseFloat(x.totalcost);
+    })
+    if(ifcourier.value)
+    {
+    form.totalprice += parseFloat(chosencourier.value.cost)
+
+    }
+
 }
 // const form = reactive({
 //   name: '',
@@ -179,14 +206,14 @@ function submitForm() {
 
               <button type="button" @click="addquantity(index)">+</button>
              </div>
-
-             <div></div>
-             <select>
-                <option v-for="(courier,index) in couriers" :index="index" :key="courier.id" value="{{ courier }}">
+              <input type="checkbox" v-model="ifcourier" />
+             <div v-if="ifcourier" @click="resettotal">
+             <select v-model="chosencourier" @change="courierChoice">
+                <option v-for="(courier,index) in couriers" :index="index" :key="courier.id" :value="courier">
                     {{ courier.fname }} {{ courier.lname }}
                 </option>
              </select>
-
+             </div>
              <div >
 
                 <h1 class="">TOTAL ${{form.totalprice}} </h1>
