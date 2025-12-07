@@ -2,7 +2,7 @@
 // Your imports go here
 
 // Your reactive variables, computed properties, and methods go here
-import { defineProps,ref } from 'vue';
+import { ref } from 'vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { order } from '@/routes';
 import { type BreadcrumbItem } from '@/types';

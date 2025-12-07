@@ -87,4 +87,9 @@ class OrderController extends Controller
         return redirect()->route('item')->with('success', 'Item updated!');
     }
 
-}
+
+  public function invoice()
+  {
+    return Inertia::render('Payment/Invoice',['order'=>Item::all()]);
+  }
+ }

@@ -32,4 +32,7 @@ Route::post('/updatecustomer/{id}', [CustomerController::class, 'update'])->midd
 Route::get('/Courier', [CourierController::class, 'show'])->middleware(['auth', 'verified'])->name('courier');
 Route::post('/addCourier', [CourierController::class, 'store'])->middleware(['auth', 'verified'])->name('courier.store');
 Route::post('/updatecourier/{id}', [CourierController::class, 'update'])->middleware(['auth', 'verified'])->name('courier.update');
+
+
+Route::get('/Invoice/{id}',[OrderController::class, 'invoice'])->middleware(['auth', 'verified'])->name('invoice.show');
 require __DIR__.'/settings.php';
