@@ -1,34 +1,37 @@
 <script setup lang="ts">
-import html2pdf from 'html2pdf.js'
-import { ref } from 'vue'
+import jsPDF from "jspdf";
 
-const pdfContent = ref<HTMLElement | null>(null)
+import { ref} from "vue";
 
-const exportToPDF = () => {
-  const element = pdfContent.value;
-  if (!element) return;
-alert("hello")
-  const options = {
-    filename: 'document.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-  } as const;
+const refname = ref<HTMLElement | null>(null);
 
-  html2pdf()
-    .set(options)
-    .from(element)
-    .save();
+const generatePdf = async () => {
+
+
+  // 4️⃣ Add to PDF
+  const pdf = new jsPDF();
+  pdf.text("hello",45,55)
+
+  // 5️⃣ Save PDF
+  pdf.save("document.pdf");
+
+
 };
 </script>
 
-<template>
-  <div>
-    <div ref="pdfContent" class="pdf-content-wrapper">
-      <h1>My PDF Report</h1>
-      <p>This content will be included in the PDF document.</p>
-    </div>
+<template class="whole">
+  <button @click="generatePdf">Download PDF</button>
 
-    <button @click="exportToPDF">Download PDF</button>
-  </div>
+  <div ref="refname" class="pdf-wrapper" style="background:white; color:black;">
+  <h1>Hello, my name is Darrin</h1>
+  <p>This content will appear in PDF.</p>
+</div>
 </template>
+<style>
+    .whole,.pdf-wrapper, .pdf-wrapper * {
+  all: unset; /* Remove inherited Tailwind styles */
+  display: revert; /* Keep normal layout */
+  background-color: rgb(255,255,255);
+  color: rgb(0,0,0);
+}
+</style>

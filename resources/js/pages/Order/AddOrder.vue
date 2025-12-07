@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3'
 import { ref, defineProps,defineEmits } from 'vue';
+import jsPDF from "jspdf";
 import {store} from '@/actions/App/Http/Controllers/OrderController';
 // import { index } from '@/actions/Laravel/Fortify/Http/Controllers/RecoveryCodeController';
+
+import { autoTable } from 'jspdf-autotable'
+
 
 
 interface OrdersInterface
@@ -113,6 +117,29 @@ function closeModal()
 
     emit('close-ordermodal','')
 }
+
+const generatePdf = async () => {
+  const pdf = new jsPDF();
+
+  // Customer name
+  pdf.text(`${props.customer.fname} ${props.customer.lname}`, 45, 30);
+
+  // Convert form.orders → AutoTable body rows
+  const rows = form.orders.map(order => [
+    order.item.name,
+    order.quantity,
+    order.totalcost
+  ]);
+
+  // Add table to PDF
+  autoTable(pdf, {
+    startY: 40,
+    head: [['ITEM', 'QUANTITY', 'COST']],
+    body: rows
+  });
+
+  pdf.save("document.pdf");
+};
 function submitForm() {
 
 
@@ -120,7 +147,10 @@ function submitForm() {
    form.post(store().url, {
    onSuccess: ({ }) => {
     console.log('Order successfully submitted:', { ...form })
+   generatePdf()
+
   emit('close-ordermodal', form.data())
+
     form.reset() // ✅ reset only after success
       showDialog.value = false
 
