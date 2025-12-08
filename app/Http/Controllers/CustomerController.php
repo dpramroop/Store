@@ -30,6 +30,9 @@ class CustomerController extends Controller
             'lname' => 'required|string|max:255',
            'email' => 'required|string|max:255',
         'contact_no' => 'required|string|max:255',
+         'address'=>'required|string|max:255',
+         'city'=>'required|string|max:30',
+         'direction'=>'required|string|max:30'
         ]);
  Log::info('Customer created:', $validated);
         // Create the new item
@@ -38,6 +41,9 @@ class CustomerController extends Controller
             'lname' => $validated['lname'],
             'email' => $validated['email'],
             'contact_no' => $validated['contact_no'],
+            'address' => $validated['address'],
+            'city' => $validated['city'],
+            'direction' => $validated['direction'],
         ]);
 
         // Return JSON response for Inertia
@@ -51,6 +57,9 @@ class CustomerController extends Controller
             'lname' => 'required|string|max:255',
            'email' => 'required|string|max:255',
         'contact_no' => 'required|string|max:20',
+        'address'=>'required|string|max:255',
+         'city'=>'required|string|max:30',
+         'direction'=>'required|string|max:30'
         ]);
         $customer = Customer::findOrFail($request->route('id'));
         $customer->update($validated);

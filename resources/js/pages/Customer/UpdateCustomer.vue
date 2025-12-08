@@ -2,6 +2,7 @@
 import { useForm } from '@inertiajs/vue3'
 import { ref,defineEmits,defineProps } from 'vue';
 import {update} from '@/actions/App/Http/Controllers/CustomerController';
+
 // import { item } from '@/routes';
 // Dialog visibility
 const showDialog = ref(false)
@@ -19,7 +20,9 @@ const form = useForm({
   lname: props.customer_given.lname|| '',
   email: props.customer_given.email || '',
   contact_no: props.customer_given.contact_no || '',
-
+  city:props.customer_given.city||'',
+  address:props.customer_given.address||'',
+  direction:props.customer_given.direction||''
 })
 
 // const form = reactive({
@@ -99,6 +102,21 @@ function submitForm() {
           <div class="field">
             <label for="contact_no">Contact Number</label>
             <input id="contact_no" v-model="form.contact_no" type="text" />
+          </div>
+
+             <div class="field">
+            <label for="address">Address</label>
+            <textarea id="address" v-model="form.address" rows="4"></textarea>
+          </div>
+
+           <div class="field">
+            <label for="city">City</label>
+            <input id="city" v-model="form.city" type="text" required />
+          </div>
+
+          <div class="field">
+            <label for="direction">Direction</label>
+            <input id="direction" v-model="form.direction" type="text" required />
           </div>
 
 

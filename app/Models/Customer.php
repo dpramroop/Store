@@ -14,8 +14,9 @@ use HasFactory;
         'lname',
         'email',
         'contact_no',
-
-
+        'address',
+        'city',
+        'direction'
     ];
 
     public function scopeSearch($query,$value)

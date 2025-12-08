@@ -14,7 +14,9 @@ const form = useForm({
   lname: '',
   email: '',
   contact_no: '',
-
+  address:'',
+  city:'',
+  direction:''
 })
 
 // const form = reactive({
@@ -92,12 +94,27 @@ function submitForm() {
 
           <div class="field">
             <label for="email">Email</label>
-            <input id="email" v-model="form.email" type="email" />
+            <input id="email" v-model="form.email" type="email" required />
           </div>
 
           <div class="field">
             <label for="contact_no">Contact Number</label>
-            <input id="contact_no" v-model="form.contact_no" type="text" />
+            <input id="contact_no" v-model="form.contact_no" type="text" required />
+          </div>
+
+           <div class="field">
+            <label for="address">Address</label>
+            <textarea id="address" v-model="form.address" rows="4"></textarea>
+          </div>
+          
+           <div class="field">
+            <label for="city">City</label>
+            <input id="city" v-model="form.city" type="text" required />
+          </div>
+
+          <div class="field">
+            <label for="direction">Direction</label>
+            <input id="direction" v-model="form.direction" type="text" required />
           </div>
 
           <div class="actions">

@@ -6,6 +6,7 @@ import {store} from '@/actions/App/Http/Controllers/OrderController';
 // import { index } from '@/actions/Laravel/Fortify/Http/Controllers/RecoveryCodeController';
 
 import { autoTable } from 'jspdf-autotable'
+import { fontStyle } from 'html2canvas/dist/types/css/property-descriptors/font-style';
 
 
 
@@ -19,6 +20,7 @@ interface OrdersInterface
 // Dialog visibility
 const showDialog = ref(false)
 const quantity=ref(1)
+const result:any=ref()
 // const total:any=ref([])
 
 // const totalcost:any=ref(0)
@@ -70,14 +72,35 @@ function categoryChosen(categoryOption:any)
   listeditem.value = items.value.filter((i:any)=> i.category==categoryOption)
 }
 
+
+function removefromcart(index:any)
+{
+
+     form.orders.splice(index,1)
+   // orders.value.push({"item":item,"quantity":quantity.value,"total":item.price * quantity.value})
+    // total.value.push(item.price)
+courierChoice()
+
+}
+
+
+
 function cart(item:any)
 {
-    const totalcost=item.price
+  const exists = form.orders.some(order => order.item.id === item.id);
+
+  if (exists) {
+    alert("Item already in cart!");
+    return;
+  }
+
+
+ const totalcost=item.price
     const quantity=1
      form.orders.push({item, totalcost, quantity})
    // orders.value.push({"item":item,"quantity":quantity.value,"total":item.price * quantity.value})
     // total.value.push(item.price)
-courierChoice()
+   courierChoice()
 }
 function resettotal()
 {
@@ -122,7 +145,11 @@ const generatePdf = async () => {
   const pdf = new jsPDF();
 
   // Customer name
-  pdf.text(`${props.customer.fname} ${props.customer.lname}`, 45, 30);
+
+  pdf.setFont("Helvetica", "bold"); // set font family and style
+  pdf.setFontSize(12); // set font size
+  pdf.text(`${props.customer.fname} ${props.customer.lname}`, 12, 20);
+  pdf.text(`${props.customer.contact_no}`, 12, 25);
 
   // Convert form.orders → AutoTable body rows
   const rows = form.orders.map(order => [
@@ -130,7 +157,11 @@ const generatePdf = async () => {
     order.quantity,
     order.totalcost
   ]);
-
+  if(form.courierpick)
+  {
+    rows.push([ '',{content: `COURIER`, styles: { fontStyle: 'bold'}},{ content:`${form.courierpick.cost}`, styles: {  fontStyle: 'bold'}}])
+  }
+  rows.push([ '',{content: `TOTAL`, styles: {  fontStyle: 'bold'}},{ content:`${form.totalprice}`, styles: {fontStyle: 'bold'}}])
   // Add table to PDF
   autoTable(pdf, {
     startY: 40,
@@ -138,10 +169,17 @@ const generatePdf = async () => {
     body: rows
   });
 
+
+
+
   pdf.save("document.pdf");
 };
 function submitForm() {
-
+if(form.orders.length==0)
+{
+    alert("MUST INCLUDE AN ITEM")
+    return
+}
 
 
    form.post(store().url, {
@@ -212,7 +250,9 @@ function submitForm() {
    <div class="">
      <Form @submit.prevent="submitForm"  class="form">
             <div class="flex grid-cols-3 gap-3" v-for="(order,index) in form.orders" :index="index" :key="index">
-             <h2>{{order.item.name}}</h2>
+
+   <button type="button" @click="removefromcart(index)">--</button>
+            <h2>{{order.item.name}}</h2>
              <h2>{{order.totalcost}}</h2>
              <h2>{{order.quantity}}</h2>
 
