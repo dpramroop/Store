@@ -149,6 +149,7 @@ const generatePdf = async () => {
   pdf.setFont("Helvetica", "bold"); // set font family and style
   pdf.setFontSize(12); // set font size
   pdf.text(`${props.customer.fname} ${props.customer.lname}`, 12, 20);
+  pdf.text(`${Date.now()}`, 80, 20);
   pdf.text(`${props.customer.contact_no}`, 12, 25);
 
   // Convert form.orders → AutoTable body rows
@@ -172,7 +173,8 @@ const generatePdf = async () => {
 
 
 
-  pdf.save("document.pdf");
+//   pdf.save("{{}}.pdf");
+   window.open(pdf.output('bloburl'), '_blank');
 };
 function submitForm() {
 if(form.orders.length==0)
@@ -237,7 +239,7 @@ if(form.orders.length==0)
             </div>
    <div class="field grid grid-cols-4 gap-4">
                 <button @click="cart(li)" type="button" class="border bg-blue-300" v-for="li in listeditem" :key="li">
-                    {{ li.name }}
+                    {{ li.name }} <label class="text-sm text-red-500">Stock: {{ li.stock_quantity }}</label>
                 </button>
             </div>
 

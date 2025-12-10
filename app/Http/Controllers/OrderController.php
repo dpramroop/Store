@@ -15,7 +15,7 @@ class OrderController extends Controller
      public function show()
     {
         return Inertia::render('Order', [
-            'message' => 'This is a message from Laravel!','orders' => Order::all(),
+            'message' => 'This is a message from Laravel!','orders' => Order::latest()->get()
         ]);
     }
 
@@ -55,7 +55,9 @@ class OrderController extends Controller
             'cost'=>$orderitem['totalcost'],
             ]
             );
-
+ $item = Item::findOrFail($orderitem['item']['id']);
+ $item->stock_quantity= $item->stock_quantity - $orderitem['quantity'];
+ $item->save();
        }
     if($request->courierpick!=null)
     {
