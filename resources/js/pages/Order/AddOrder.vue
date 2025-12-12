@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3'
-import { ref, defineProps,defineEmits } from 'vue';
+import { ref,  } from 'vue';
 import jsPDF from "jspdf";
 import {store} from '@/actions/App/Http/Controllers/OrderController';
 // import { index } from '@/actions/Laravel/Fortify/Http/Controllers/RecoveryCodeController';

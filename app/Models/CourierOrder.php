@@ -13,4 +13,16 @@ class CourierOrder extends Model
         'courier_id',
         'status',
 ];
+
+public function order()
+{
+    return $this->belongsTo(Order::class, 'order_id');
+}
+
+public function courier()
+{
+    return $this->belongsTo(Courier::class, 'courier_id');
+
+
+}
 }

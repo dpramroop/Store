@@ -15,7 +15,7 @@ class OrderController extends Controller
      public function show()
     {
         return Inertia::render('Order', [
-            'message' => 'This is a message from Laravel!','orders' => Order::latest()->get()
+            'message' => 'This is a message from Laravel!','orders' => Order::with('orderSalesItems.item','customer','courierOrder.courier')->latest()->get(),
         ]);
     }
 

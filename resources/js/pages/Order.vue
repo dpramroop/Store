@@ -2,11 +2,12 @@
 // Your imports go here
 
 // Your reactive variables, computed properties, and methods go here
-import { defineProps,ref } from 'vue';
+import { ref } from 'vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { order } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head,router } from '@inertiajs/vue3';
+import OrderDetail from './Order/OrderDetail.vue';
 
 const props = defineProps<{
   message?: string
@@ -29,13 +30,12 @@ const breadcrumbs: BreadcrumbItem[] = [
      <Head title="Order"/>
 
 <app-layout :breadcrumbs="breadcrumbs">
-<h1>Hello</h1>
+
 
     <div v-for="order in orderList" :key="order.id" class="mb-4">
-        <p>Order ID: {{ order.id }}</p>
+      <OrderDetail
+        :order="order" />
 
-        <p>Total Amount: ${{ order.totalprice }}</p>
-        <hr />
     </div>
 
 </app-layout>

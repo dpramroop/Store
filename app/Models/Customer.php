@@ -24,4 +24,9 @@ use HasFactory;
         $query->where('name','like',"%{$value}%")->orWhere('contact_no','like',"%{$value}%");
     }
 
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'customer_id');
+    }
+
 }

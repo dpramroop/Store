@@ -110,7 +110,7 @@ return new class extends Migration
             $table->id();
             $table->integer('order_id');
             $table->integer('courier_id');
-            $table->integer('status');
+            $table->string('status');
             $table->rememberToken();
             $table->timestamps();
         });
