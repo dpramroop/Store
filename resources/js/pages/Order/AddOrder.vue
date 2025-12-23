@@ -238,8 +238,9 @@ if(form.orders.length==0)
                 </button>
             </div>
    <div class="field grid grid-cols-4 gap-4">
-                <button @click="cart(li)" type="button" class="border bg-blue-300" v-for="li in listeditem" :key="li">
-                    {{ li.name }} <label class="text-sm text-red-500">Stock: {{ li.stock_quantity }}</label>
+                <button @click="cart(li)" type="button" class="border bg-blue-300" v-for="li in listeditem" :key="li"  >
+
+                  <label class="text-sm text-red-500" v-if="li.stock_quantity>6">   {{ li.name }} Stock: {{ li.stock_quantity }}</label>
                 </button>
             </div>
 
