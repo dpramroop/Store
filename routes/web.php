@@ -7,15 +7,14 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CourierController;
+use App\Http\Controllers\DashboardController;
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canRegister' => Features::enabled(Features::registration()),
     ]);
 })->name('home');
 
-Route::get('dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('dashboard', [DashboardController::class,'show'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/Item', [ItemController::class, 'show'])->middleware(['auth', 'verified'])->name('item');
 Route::post('/additem', [ItemController::class, 'store'])->middleware(['auth', 'verified'])->name('items.store');
