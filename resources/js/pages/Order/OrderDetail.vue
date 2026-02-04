@@ -1,35 +1,32 @@
 
 <template>
-    <div class="item-card">
-        <div class="item-header">
-            <h2 class="item-name">Order #{{ order.id }}</h2>
-                  <span class="text-black"> - {{ order.status }}</span>
-            <button
-                class="toggle-btn"
-                @click="toggle"
-            >
-                <span>{{ open ? 'Hide' : 'Show' }} Details</span>
-                <svg
-                    class="chev"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                >
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+     <article class="item-card" @keyup.enter="toggle" tabindex="0" role="button" :aria-expanded="open.toString()">
+        <header class="item-header" @click="toggle">
+            <h3 class="item-name">{{ order.id }}</h3>
+            <button class="toggle-btn" @click.stop="toggle" :aria-pressed="open.toString()">
+                <span v-if="!open">Show details</span>
+                <span v-else>Hide details</span>
+                <svg class="chev" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
             </button>
-        </div>
+            <UpdateItem :item_given="item" v-on:item-updated="notifyUpdate"/>
+        </header>
+               <div class="details">
+                <p class="field"><strong>Description:</strong> <span>{{ order.customer.fname || '—' }}</span></p>
+                <p class="field"><strong>Brand:</strong> <span>{{ order.totalcost || '—' }}</span></p>
+                <p class="field"><strong>Category:</strong> <span>{{ order.lname || '—' }}</span></p>
+               </div>
         <transition name="fade">
-            <div v-if="open" class="details">
-                <div class="field"><strong>Customer:</strong> {{ order.customer.fname }}</div>
-                <div class="field"><strong>Total Amount:</strong> ${{ order.totalcost.toFixed(2) }}</div>
-                <div class="field"><strong>Status:</strong> {{ order.status }}</div>
-                <button @click="openModal(order.customer.id)">View Customer Details</button>
+  <div v-if="open" class="details">
+    <div class="field"><strong>Stock Quantity:</strong> <span>{{ order.status || '0' }}</span></div>
 
-            </div>
+
+  </div>
+
         </transition>
-    </div>
+    </article>
+
 </template>
 
 <script setup lang="ts">
@@ -50,6 +47,7 @@ const emits = defineEmits<{
 
 const open = ref(false)
 function toggle() {
+
     open.value = !open.value
 }
 function notifyUpdate(updatedCustomer: any) {

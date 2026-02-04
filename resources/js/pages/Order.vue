@@ -31,7 +31,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 <app-layout :breadcrumbs="breadcrumbs">
 
-
+    <!-- <div>{{JSON.stringify(orderList)}}</div> -->
     <div v-for="order in orderList" :key="order.id" class="mb-4">
       <OrderDetail
         :order="order" />
