@@ -3,6 +3,9 @@
      <article class="item-card" @keyup.enter="toggle" tabindex="0" role="button" :aria-expanded="open.toString()">
         <header class="item-header" @click="toggle">
             <h3 class="item-name">{{ order.id }}</h3>
+            <span class="item-name">{{ order.totalprice || '—' }}</span>
+            <span class="item-name">{{  order.customer.fname+" "+ order.customer.lname || '—' }}</span>
+            <span class="item-name">{{  order.status|| '—' }}</span>
             <button class="toggle-btn" @click.stop="toggle" :aria-pressed="open.toString()">
                 <span v-if="!open">Show details</span>
                 <span v-else>Hide details</span>
@@ -10,16 +13,16 @@
                     <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
             </button>
-            <UpdateItem :item_given="item" v-on:item-updated="notifyUpdate"/>
+
         </header>
-               <div class="details">
-                <p class="field"><strong>Description:</strong> <span>{{ order.customer.fname || '—' }}</span></p>
-                <p class="field"><strong>Brand:</strong> <span>{{ order.totalcost || '—' }}</span></p>
-                <p class="field"><strong>Category:</strong> <span>{{ order.lname || '—' }}</span></p>
-               </div>
         <transition name="fade">
   <div v-if="open" class="details">
-    <div class="field"><strong>Stock Quantity:</strong> <span>{{ order.status || '0' }}</span></div>
+
+    <div class="field" v-for="salesitem in order.order_sales_items" :key="salesitem.id">
+         <span class="item-name">{{ salesitem.item.name || '-' }} </span>
+        <span class="item-name"> {{ salesitem.quantity || '-' }} </span>
+         <span class="cost"> {{ salesitem.cost || '0' }} </span>
+    </div>
 
 
   </div>
@@ -85,6 +88,14 @@ function openModal(id:any) {
     font-size: 1.05rem;
     font-weight: 600;
     color: #111827;
+
+}
+.cost {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #111827;
+    text-align: right;
 }
 
 .toggle-btn {
@@ -115,11 +126,16 @@ function openModal(id:any) {
     padding-top: 8px;
     border-top: 1px dashed #e6edf3;
     color: #374151;
+
 }
 .field {
     margin: 6px 0;
     font-size: 0.95rem;
+    display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* Example: 3 equal columns */
+  gap: 20px;
 }
+
 
 .fade-enter-active, .fade-leave-active {
     transition: opacity 160ms ease, transform 160ms ease;
